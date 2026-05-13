@@ -1,0 +1,31 @@
+<?php
+
+use App\Enums\AttendanceStatus;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('finger_prints', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
+            $table->enum('attendance', AttendanceStatus::cases());
+            $table->date('date');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('finger_prints');
+    }
+};
