@@ -13,7 +13,7 @@ interface CheckboxFieldProps {
     onCheckedChange: (checked: boolean) => void;
     disabled?: boolean
 }
-export function CheckboxFiel({ id, label, className, description, error, checked, onCheckedChange, disabled }: CheckboxFieldProps) {
+export function CheckboxField({ id, label, className, description, error, checked, onCheckedChange, disabled }: CheckboxFieldProps) {
     const inputId = id || useId();
     return <div className={cn("space-y-2", className)}>
         <div className="flex items-start gap-2">
