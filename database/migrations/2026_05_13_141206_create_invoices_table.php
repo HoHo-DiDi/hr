@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained();
-            $table->date('period_month')->comment('The work month this pay belongs to');
-            $table->date('issue_date')->comment('The actual pay day');
+            $table->date('pay_month')->comment('The work month this pay belongs to');
+
+            $table->date('payment_date')->comment('The actual pay day');
             $table->decimal('salary', 15, 2);
             $table->integer('present_days');
             $table->integer('leave_days');
-            $table->float('ot_hours');
+            $table->decimal('ot_hours', 12, 2);
             $table->timestamps();
         });
     }

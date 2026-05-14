@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('name');
             $table->decimal('amount', 12, 2);
-            $table->boolean('is_for_all')->default(true);
+            $table->boolean('is_for_all')->default(false);
             $table->timestamps();
         });
     }

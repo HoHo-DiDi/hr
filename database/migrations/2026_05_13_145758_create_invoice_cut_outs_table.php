@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('invoice_cut_outs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('invoice_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('cut_outs_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('cut_out_id')->constrained()->cascadeOnDelete();
             $table->decimal('amount', 12, 2);
             $table->timestamps();
         });

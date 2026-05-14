@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
             $table->foreignId('leave_type_id')->constrained()->cascadeOnDelete();
-            $table->decimal('amount', 12, 2);
+            $table->decimal('balance', 12, 1);
             $table->timestamps();
         });
     }

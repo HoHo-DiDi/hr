@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('yearly_reset');
             $table->boolean('is_paid')->default(false);
             $table->boolean('is_refundable')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
