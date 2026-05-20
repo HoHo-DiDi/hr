@@ -14,7 +14,7 @@ const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>(({ id,
         {label && <Label htmlFor={inputId}>{label}</Label>}
         <Textarea id={inputId} className={cn(error && "border-red-500 focus-visible:ring-red-500")} ref={ref} {...props}></Textarea>
         {!error && description && <p className="text-sm text-muted-foreground">{description}</p>}
-        {error && <p className="text-sm text-red-500 font-medium">{description}</p>}
+        {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
     </div>)
 });
 TextAreaField.displayName = "TextAreaField"
