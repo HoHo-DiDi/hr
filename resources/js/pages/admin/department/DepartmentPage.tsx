@@ -1,7 +1,16 @@
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import CreateDepartmentDialog from './CreateDepartmentDialog';
+import { DataTable } from '@/components/Datatable';
+import { departmentColumns } from '../../../modules/department/components/departmentColumns';
+import { Department } from '@/modules/department/hooks/type';
+import { destroy } from '@/routes/departments';
+import { useState } from 'react';
 
-const DepartmentPage = () => {
+interface PageProps {
+    departments: Department[];
+}
+
+const DepartmentPage = ({ departments }: PageProps) => {
     return (
         <>
             <Head title="Departments" />
@@ -16,6 +25,18 @@ const DepartmentPage = () => {
                         </p>
                     </div>
                     <CreateDepartmentDialog />
+                </div>
+
+                <div>
+                    <DataTable
+                        columns={departmentColumns}
+                        data={departments}
+                        meta={{
+                            onDelete: (department: Department) => {
+                                router.delete(destroy(department.id).url);
+                            },
+                        }}
+                    />
                 </div>
             </div>
         </>
