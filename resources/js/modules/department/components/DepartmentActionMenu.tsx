@@ -6,7 +6,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
-import { Department, DepartmentTableMeta } from '../hooks/type';
+import { Department, DepartmentTableMeta } from '../type';
 import EditDepartmentDialog from '@/pages/admin/department/EditDepartmentDialog';
 import { useState } from 'react';
 import DeleteDepartmentDialog from '@/pages/admin/department/DeleteDepartmentDialog';

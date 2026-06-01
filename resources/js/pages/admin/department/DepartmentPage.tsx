@@ -1,16 +1,37 @@
 import { Head, router } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 import CreateDepartmentDialog from './CreateDepartmentDialog';
 import { DataTable } from '@/components/Datatable';
 import { departmentColumns } from '../../../modules/department/components/departmentColumns';
-import { Department } from '@/modules/department/hooks/type';
-import { destroy } from '@/routes/departments';
-import { useState } from 'react';
+import { Department } from '@/modules/department/type';
+import departments, { destroy } from '@/routes/departments';
+
+interface DepartmentPaginator {
+    data: Department[];
+    current_page: number;
+    per_page: number;
+    [key: string]: any;
+}
 
 interface PageProps {
-    departments: Department[];
+    departments: DepartmentPaginator;
 }
 
 const DepartmentPage = ({ departments }: PageProps) => {
+    const [pagination, setPagination] = useState({
+        pageIndex: Math.max(departments.current_page - 1, 0),
+        pageSize: departments.per_page,
+    });
+
+    useEffect(() => {
+        setPagination({
+            pageIndex: Math.max(departments.current_page - 1, 0),
+            pageSize: departments.per_page,
+        });
+    }, [departments.current_page, departments.per_page]);
+
+    const pageCount = departments.last_page;
+
     return (
         <>
             <Head title="Departments" />
@@ -30,17 +51,29 @@ const DepartmentPage = ({ departments }: PageProps) => {
                 <div>
                     <DataTable
                         columns={departmentColumns}
-                        data={departments}
+                        data={departments.data}
                         meta={{
                             onDelete: (department: Department) => {
                                 router.delete(destroy(department.id).url);
                             },
                         }}
+                        pageCount={pageCount}
+                        pagination={pagination}
+                        setPagination={setPagination}
                     />
                 </div>
             </div>
         </>
     );
+};
+
+DepartmentPage.layout = {
+    breadcrumbs: [
+        {
+            title: 'Departments',
+            href: departments.index.url(),
+        },
+    ],
 };
 
 export default DepartmentPage;

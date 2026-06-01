@@ -8,7 +8,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Department } from '@/modules/department/hooks/type';
+import { Department } from '@/modules/department/type';
 import React from 'react';
 
 const DeleteDepartmentDialog = ({

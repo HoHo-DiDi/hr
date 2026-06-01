@@ -17,7 +17,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::select('id', 'name')->get();
+        $departments = Department::select('id', 'name')->latest()->paginate();
         return Inertia::render('admin/department/DepartmentPage', ['departments' => $departments]);
     }
 

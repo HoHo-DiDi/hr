@@ -1,6 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { DepartmentActionMenu } from './DepartmentActionMenu';
-import { Department, DepartmentTableMeta } from '../hooks/type';
+import { Department, DepartmentTableMeta } from '../type';
 
 export const departmentColumns: ColumnDef<Department>[] = [
     {
