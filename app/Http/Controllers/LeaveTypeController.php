@@ -5,16 +5,21 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreLeaveTypeRequest;
 use App\Http\Requests\UpdateLeaveTypeRequest;
 use App\Models\LeaveType;
+use App\Services\LeaveTypeService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class LeaveTypeController extends Controller
 {
+    public function __construct(protected LeaveTypeService $service) {}
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $leaveTypes = $this->service->getData($request->only(['search', 'sort', 'direction', 'per_page']));
+        return Inertia::render('admin/leave-types/LeaveTypeIndexPage', compact('leaveTypes'));
     }
 
     /**

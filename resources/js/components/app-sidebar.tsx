@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
+import leaveTypes from '@/routes/leave-types';
 
 const mainNavItems: NavItem[] = [
     {
@@ -22,6 +23,10 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+    {
+        title: 'Leave Type',
+        href: leaveTypes.index().url,
+    }
 ];
 
 const footerNavItems: NavItem[] = [

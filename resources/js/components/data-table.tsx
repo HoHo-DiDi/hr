@@ -6,7 +6,7 @@ import {
     flexRender,
     getCoreRowModel,
     useReactTable,
-    SortingState,
+    type SortingState,
 } from '@tanstack/react-table';
 import {
     Table,
@@ -24,7 +24,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, ChevronUp } from 'lucide-react';
 import { LaravelPagination } from '@/types';
 
 interface DataTableProps<TData, TValue> {
@@ -146,7 +146,7 @@ export function DataTable<TData, TValue>({
                                                 </span>
                                                 {isSortable && currentColumnSort && (
                                                     <span className="text-xs">
-                                                        {currentColumnSort.desc ? ' 🔽' : ' 🔼'}
+                                                        {currentColumnSort.desc ? <ChevronDown className='w-3 h-3' /> : <ChevronUp className='w-3 h-3' />}
                                                     </span>
                                                 )}
                                             </div>
@@ -178,68 +178,69 @@ export function DataTable<TData, TValue>({
             </div>
 
             {/* Pagination Action Bar /}
-            <div className="flex items-center justify-between px-2">
                 <div className="flex-1 text-sm text-muted-foreground">
-                    Showing {paginationData.from ?? 0} to {paginationData.to ?? 0} of {paginationData.total} entries
+                Showing {paginationData.from ?? 0} to {paginationData.to ?? 0} of {paginationData.total} entries
                 </div>
                 <div className="flex items-center space-x-6 lg:space-x-8">
-                    {/ Rows Per Page Selector */}
-            <div className="flex items-center space-x-2">
-                <p className="text-sm font-medium">Rows per page</p>
-                <Select
-                    value={String(paginationData.per_page)}
-                    onValueChange={(value) => handleParamChange({ per_page: value })}
-                >
-                    <SelectTrigger className="h-8 w-17.5">
-                        <SelectValue placeholder={String(paginationData.per_page)} />
-                    </SelectTrigger>
-                    <SelectContent side="top">
-                        {[10, 20, 30, 40, 50].map((size) => (
-                            <SelectItem key={size} value={String(size)}>
-                                {size}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-            </div>
+                {/ Rows Per Page Selector */}
+            <div className="flex items-center justify-between px-2">
+                <div className="flex items-center space-x-2">
+                    <p className="text-sm font-medium">Rows per page</p>
+                    <Select
+                        value={String(paginationData.per_page)}
+                        onValueChange={(value) => handleParamChange({ per_page: value })}
+                    >
+                        <SelectTrigger className="h-8 w-17.5">
+                            <SelectValue placeholder={String(paginationData.per_page)} />
+                        </SelectTrigger>
+                        <SelectContent side="top">
+                            {[10, 20, 30, 40, 50].map((size) => (
+                                <SelectItem key={size} value={String(size)}>
+                                    {size}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
 
-            {/* Navigation Buttons */}
-            <div className="flex items-center space-x-2">
-                <Button
-                    variant="outline"
-                    className="hidden h-8 w-8 p-0 lg:flex"
-                    onClick={() => handleParamChange({ page: 1 })}
-                    disabled={paginationData.current_page === 1}
-                >
-                    <ChevronsLeft className="h-4 w-4" />
-                </Button>
-                <Button
-                    variant="outline"
-                    className="h-8 w-8 p-0"
-                    onClick={() => handleParamChange({ page: paginationData.current_page - 1 })}
-                    disabled={paginationData.current_page === 1}
-                >
-                    <ChevronLeft className="h-4 w-4" />
-                </Button>
-                <span className="text-sm font-medium px-2">
-                    Page {paginationData.current_page} of {paginationData.last_page}
-                </span>
-                <Button
-                    variant="outline"
-                    className="h-8 w-8 p-0"
-                    onClick={() => handleParamChange({ page: paginationData.current_page + 1 })}
-                    disabled={paginationData.current_page === paginationData.last_page}
-                >
-                    <ChevronRight className="h-4 w-4" />
-                </Button>
-                <Button
-                    variant="outline"
-                    className="hidden h-8 w-8 p-0 lg:flex"
-                    onClick={() => handleParamChange({ page: paginationData.last_page })}
-                    disabled={paginationData.current_page === paginationData.last_page}
-                >
-                    <ChevronsRight className="h-4 w-4" />
-                </Button>
+                {/* Navigation Buttons */}
+                <div className="flex items-center space-x-2">
+                    <Button
+                        variant="outline"
+                        className="hidden h-8 w-8 p-0 lg:flex"
+                        onClick={() => handleParamChange({ page: 1 })}
+                        disabled={paginationData.current_page === 1}
+                    >
+                        <ChevronsLeft className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant="outline"
+                        className="h-8 w-8 p-0"
+                        onClick={() => handleParamChange({ page: paginationData.current_page - 1 })}
+                        disabled={paginationData.current_page === 1}
+                    >
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <span className="text-sm font-medium px-2">
+                        Page {paginationData.current_page} of {paginationData.last_page}
+                    </span>
+                    <Button
+                        variant="outline"
+                        className="h-8 w-8 p-0"
+                        onClick={() => handleParamChange({ page: paginationData.current_page + 1 })}
+                        disabled={paginationData.current_page === paginationData.last_page}
+                    >
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
+                    <Button
+                        variant="outline"
+                        className="hidden h-8 w-8 p-0 lg:flex"
+                        onClick={() => handleParamChange({ page: paginationData.last_page })}
+                        disabled={paginationData.current_page === paginationData.last_page}
+                    >
+                        <ChevronsRight className="h-4 w-4" />
+                    </Button>
+                </div>
             </div>
         </div>
     );
