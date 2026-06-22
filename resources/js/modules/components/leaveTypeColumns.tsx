@@ -1,8 +1,9 @@
-import BagdeCell from "@/components/common/badge-cell";
+
 import TextCell from "@/components/common/text-cell";
 import { Badge } from "@/components/ui/badge";
-import { LeaveType } from "@/types/leave-type";
 import { ColumnDef } from "@tanstack/react-table";
+import { LeaveType } from "../types";
+import ToggleBadgeCell from "@/components/common/toggle-badge";
 
 export const leaveTypeColumns: ColumnDef<LeaveType>[] = [
     {
@@ -22,12 +23,12 @@ export const leaveTypeColumns: ColumnDef<LeaveType>[] = [
     {
         accessorKey: "is_paid",
         header: "Paid",
-        cell: ({ getValue }) => <BagdeCell value={getValue() as boolean} />
+        cell: ({ getValue }) => <ToggleBadgeCell value={getValue() as boolean} />
     },
     {
         accessorKey: "is_refundable",
         header: "Refundable",
-        cell: ({ getValue }) => <BagdeCell value={getValue() as boolean} />
+        cell: ({ getValue }) => <ToggleBadgeCell value={getValue() as boolean} />
     },
     {
         accessorKey: "yearly_reset",

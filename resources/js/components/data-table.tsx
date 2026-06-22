@@ -24,7 +24,15 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, ChevronUp } from 'lucide-react';
+import {
+    ChevronDown,
+    ChevronLeft,
+    ChevronRight,
+    ChevronsLeft,
+    ChevronsRight,
+    ChevronsUpDown,
+    ChevronUp,
+} from 'lucide-react';
 import { LaravelPagination } from '@/types';
 
 interface DataTableProps<TData, TValue> {
@@ -44,7 +52,8 @@ export function DataTable<TData, TValue>({
     // Map current URL search params to find existing sort rules
     const urlParams = new URLSearchParams(window.location.search);
     const currentSortField = urlParams.get('sort') || '';
-    const currentSortDir = urlParams.get('direction') === 'desc' ? 'desc' : 'asc';
+    const currentSortDir =
+        urlParams.get('direction') === 'desc' ? 'desc' : 'asc';
 
     const sorting: SortingState = currentSortField
         ? [{ id: currentSortField, desc: currentSortDir === 'desc' }]
@@ -63,7 +72,9 @@ export function DataTable<TData, TValue>({
     });
 
     // Helper function to trigger Inertia server reloads
-    const handleParamChange = (params: Record<string, string | number | null>) => {
+    const handleParamChange = (
+        params: Record<string, string | number | null>,
+    ) => {
         const currentUrl = new URL(window.location.href);
 
         Object.entries(params).forEach(([key, value]) => {
@@ -87,7 +98,13 @@ export function DataTable<TData, TValue>({
                 for (const key of Object.keys(pageProps)) {
                     const val = pageProps[key];
                     if (val === paginationData) return [key];
-                    if (val && typeof val === 'object' && 'data' in val && val.data === paginationData.data) return [key];
+                    if (
+                        val &&
+                        typeof val === 'object' &&
+                        'data' in val &&
+                        val.data === paginationData.data
+                    )
+                        return [key];
                 }
             } catch (e) {
                 // fallback to undefined
@@ -103,13 +120,15 @@ export function DataTable<TData, TValue>({
                     preserveState: true,
                     preserveScroll: true,
                     only: onlyOption,
-                }
+                },
             );
         });
     };
 
     return (
-        <div className={`space-y-4 ${isPending ? 'opacity-60 pointer-events-none transition-opacity' : ''}`}>
+        <div
+            className={`space-y-4 ${isPending ? 'pointer-events-none opacity-60 transition-opacity' : ''}`}
+        >
             {/* Table Main Grid */}
             <div className="rounded-md border">
                 <Table>
@@ -117,14 +136,25 @@ export function DataTable<TData, TValue>({
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
-                                    const isSortable = header.column.getCanSort();
-                                    const currentColumnSort = sorting.find((s) => s.id === header.id);
+                                    const isSortable =
+                                        header.column.getCanSort();
+                                    const currentColumnSort = sorting.find(
+                                        (s) => s.id === header.id,
+                                    );
 
                                     const toggleSort = () => {
                                         if (!isSortable) return;
                                         let nextDir: string | null = 'asc';
-                                        if (currentColumnSort && !currentColumnSort.desc) nextDir = 'desc';
-                                        else if (currentColumnSort && currentColumnSort.desc) nextDir = null;
+                                        if (
+                                            currentColumnSort &&
+                                            !currentColumnSort.desc
+                                        )
+                                            nextDir = 'desc';
+                                        else if (
+                                            currentColumnSort &&
+                                            currentColumnSort.desc
+                                        )
+                                            nextDir = null;
 
                                         handleParamChange({
                                             sort: nextDir ? header.id : null,
@@ -135,20 +165,33 @@ export function DataTable<TData, TValue>({
                                     return (
                                         <TableHead
                                             key={header.id}
-                                            className={isSortable ? 'cursor-pointer select-none hover:bg-muted/50' : ''}
+                                            className={
+                                                isSortable
+                                                    ? 'cursor-pointer select-none hover:bg-muted/50'
+                                                    : ''
+                                            }
                                             onClick={toggleSort}
                                         >
                                             <div className="flex items-center space-x-2">
                                                 <span>
                                                     {header.isPlaceholder
                                                         ? null
-                                                        : flexRender(header.column.columnDef.header, header.getContext())}
+                                                        : flexRender(
+                                                            header.column
+                                                                .columnDef
+                                                                .header,
+                                                            header.getContext(),
+                                                        )}
                                                 </span>
-                                                {isSortable && currentColumnSort && (
-                                                    <span className="text-xs">
-                                                        {currentColumnSort.desc ? <ChevronDown className='w-3 h-3' /> : <ChevronUp className='w-3 h-3' />}
-                                                    </span>
-                                                )}
+                                                {isSortable &&
+                                                    currentColumnSort && (
+                                                        <ChevronsUpDown
+                                                            className={`h-4 w-4 transition-colors ${currentColumnSort.desc
+                                                                    ? '[&>path:first-child]:text-muted-foreground/30 [&>path:last-child]:text-primary'
+                                                                    : '[&>path:first-child]:text-primary [&>path:last-child]:text-muted-foreground/30'
+                                                                } `}
+                                                        />
+                                                    )}
                                             </div>
                                         </TableHead>
                                     );
@@ -162,13 +205,20 @@ export function DataTable<TData, TValue>({
                                 <TableRow key={row.id}>
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext(),
+                                            )}
                                         </TableCell>
                                     ))}
-                                </TableRow>))
+                                </TableRow>
+                            ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                <TableCell
+                                    colSpan={columns.length}
+                                    className="h-24 text-center"
+                                >
                                     No results found.
                                 </TableCell>
                             </TableRow>
@@ -188,10 +238,14 @@ export function DataTable<TData, TValue>({
                     <p className="text-sm font-medium">Rows per page</p>
                     <Select
                         value={String(paginationData.per_page)}
-                        onValueChange={(value) => handleParamChange({ per_page: value })}
+                        onValueChange={(value) =>
+                            handleParamChange({ per_page: value })
+                        }
                     >
                         <SelectTrigger className="h-8 w-17.5">
-                            <SelectValue placeholder={String(paginationData.per_page)} />
+                            <SelectValue
+                                placeholder={String(paginationData.per_page)}
+                            />
                         </SelectTrigger>
                         <SelectContent side="top">
                             {[10, 20, 30, 40, 50].map((size) => (
@@ -216,27 +270,46 @@ export function DataTable<TData, TValue>({
                     <Button
                         variant="outline"
                         className="h-8 w-8 p-0"
-                        onClick={() => handleParamChange({ page: paginationData.current_page - 1 })}
+                        onClick={() =>
+                            handleParamChange({
+                                page: paginationData.current_page - 1,
+                            })
+                        }
                         disabled={paginationData.current_page === 1}
                     >
                         <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    <span className="text-sm font-medium px-2">
-                        Page {paginationData.current_page} of {paginationData.last_page}
+                    <span className="px-2 text-sm font-medium">
+                        Page {paginationData.current_page} of{' '}
+                        {paginationData.last_page}
                     </span>
                     <Button
                         variant="outline"
                         className="h-8 w-8 p-0"
-                        onClick={() => handleParamChange({ page: paginationData.current_page + 1 })}
-                        disabled={paginationData.current_page === paginationData.last_page}
+                        onClick={() =>
+                            handleParamChange({
+                                page: paginationData.current_page + 1,
+                            })
+                        }
+                        disabled={
+                            paginationData.current_page ===
+                            paginationData.last_page
+                        }
                     >
                         <ChevronRight className="h-4 w-4" />
                     </Button>
                     <Button
                         variant="outline"
                         className="hidden h-8 w-8 p-0 lg:flex"
-                        onClick={() => handleParamChange({ page: paginationData.last_page })}
-                        disabled={paginationData.current_page === paginationData.last_page}
+                        onClick={() =>
+                            handleParamChange({
+                                page: paginationData.last_page,
+                            })
+                        }
+                        disabled={
+                            paginationData.current_page ===
+                            paginationData.last_page
+                        }
                     >
                         <ChevronsRight className="h-4 w-4" />
                     </Button>
