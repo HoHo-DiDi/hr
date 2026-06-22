@@ -5,6 +5,10 @@ import { LeaveType } from "@/modules/types";
 import { LaravelPagination } from "@/types";
 import { Head, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { LeaveTypeDialog } from "./components/leave-type-dialog";
+import { DeleteLeaveTypeDialog } from "./components/delete-leave-type-dialog";
 
 interface PageProps {
     leaveTypes: LaravelPagination<LeaveType>
@@ -13,6 +17,9 @@ interface PageProps {
 const LeaveTypeIndexPage = ({ leaveTypes }: PageProps) => {
 
     const [searchValue, setSearchValue] = useState((new URLSearchParams(window.location.search).get('search')) || '');
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [selectedLeaveType, setSelectedLeaveType] = useState<LeaveType | null>(null);
 
     useEffect(() => {
 
@@ -41,6 +48,20 @@ const LeaveTypeIndexPage = ({ leaveTypes }: PageProps) => {
         return () => clearTimeout(timer);
     }, [searchValue])
 
+    const handleEdit = (leaveType: LeaveType) => {
+        setSelectedLeaveType(leaveType);
+        setIsFormOpen(true);
+    };
+
+    const handleDelete = (leaveType: LeaveType) => {
+        setSelectedLeaveType(leaveType);
+        setIsDeleteOpen(true);
+    };
+
+    const handleAdd = () => {
+        setSelectedLeaveType(null);
+        setIsFormOpen(true);
+    };
 
     return <>
         <Head title="Leave Types" />
@@ -54,13 +75,44 @@ const LeaveTypeIndexPage = ({ leaveTypes }: PageProps) => {
                         Manage your Leave Types.
                     </p>
                 </div>
-                <SearchInput value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+                <div className="flex items-center gap-2">
+                    <SearchInput value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+                    <Button onClick={handleAdd}>
+                        <Plus className="mr-2 h-4 w-4" />
+                        Add Leave Type
+                    </Button>
+                </div>
             </div>
 
             <div>
-                <DataTable paginationData={leaveTypes} columns={leaveTypeColumns} />
+                <DataTable
+                    paginationData={leaveTypes}
+                    columns={leaveTypeColumns}
+                    meta={{
+                        onEdit: handleEdit,
+                        onDelete: handleDelete,
+                    }}
+                />
             </div>
         </div>
+
+        <LeaveTypeDialog
+            isOpen={isFormOpen}
+            onClose={() => {
+                setIsFormOpen(false);
+                setSelectedLeaveType(null);
+            }}
+            leaveType={selectedLeaveType}
+        />
+
+        <DeleteLeaveTypeDialog
+            isOpen={isDeleteOpen}
+            onClose={() => {
+                setIsDeleteOpen(false);
+                setSelectedLeaveType(null);
+            }}
+            leaveType={selectedLeaveType}
+        />
     </>
 }
 

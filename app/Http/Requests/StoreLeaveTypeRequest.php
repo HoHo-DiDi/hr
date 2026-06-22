@@ -25,7 +25,7 @@ class StoreLeaveTypeRequest extends FormRequest
     {
         return [
             'name' => ['string', 'required', 'max:50'],
-            'symbol' => ['required', 'unique:leave_types,name', 'string'],
+            'symbol' => ['required', 'unique:leave_types,symbol', 'string'],
             'yearly_reset' => ['required', 'min:0', 'numeric'],
             'is_paid' => ['required', 'boolean'],
             'is_refundable' => ['required', 'boolean'],

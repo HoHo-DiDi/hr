@@ -30,6 +30,6 @@ class LeaveType extends Model
 
     public function isInUse(): bool
     {
-        return $this->leaveHistories()->exist();
+        return $this->leaveHistories()->exists();
     }
 }

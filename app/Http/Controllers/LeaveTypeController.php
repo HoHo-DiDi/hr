@@ -35,7 +35,8 @@ class LeaveTypeController extends Controller
      */
     public function store(StoreLeaveTypeRequest $request)
     {
-        //
+        $this->service->store($request->validated());
+        return redirect()->route('leave-types.index')->with('success', 'Leave type created successfully.');
     }
 
     /**
@@ -59,7 +60,8 @@ class LeaveTypeController extends Controller
      */
     public function update(UpdateLeaveTypeRequest $request, LeaveType $leaveType)
     {
-        //
+        $this->service->update($request->validated(), $leaveType);
+        return redirect()->route('leave-types.index')->with('success', 'Leave type updated successfully.');
     }
 
     /**
@@ -67,6 +69,7 @@ class LeaveTypeController extends Controller
      */
     public function destroy(LeaveType $leaveType)
     {
-        //
+        $this->service->destroy($leaveType);
+        return redirect()->route('leave-types.index')->with('success', 'Leave type deleted successfully.');
     }
 }
