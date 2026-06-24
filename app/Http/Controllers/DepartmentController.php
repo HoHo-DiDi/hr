@@ -72,10 +72,6 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        // if ($department->employees()->exists()) {
-        //     return back()->with('error', 'Cannot delete department because it is assigned to employee.');
-        // }
-
         $department->delete();
 
         return redirect()->route('departments.index')

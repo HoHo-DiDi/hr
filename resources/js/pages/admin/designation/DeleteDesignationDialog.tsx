@@ -1,3 +1,4 @@
+import { Designation } from '@/modules/designation/type';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -8,36 +9,34 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Department } from '@/modules/department/type';
 
-const DeleteDepartmentDialog = ({
+const DeleteDesignationDialog = ({
+    designation,
     open,
     onOpenChange,
-    department,
     onDelete,
 }: {
+    designation: Designation;
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    department: Department;
-    onDelete: ((department: Department) => void) | undefined;
+    onDelete: ((designation: Designation) => void) | undefined;
 }) => {
     const handleDelete = () => {
         if (onDelete) {
-            onDelete(department);
+            onDelete(designation);
             onOpenChange(false);
         }
     };
-
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>
-                        Are you sure you want to delete this department?
+                        Are you sure you want to delete this desgination?
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                         This will permanently delete{' '}
-                        <strong>{department.name}</strong> and remove it from
+                        <strong>{designation.name}</strong> and remove it from
                         the system. This action cannot be undone.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
@@ -57,4 +56,4 @@ const DeleteDepartmentDialog = ({
     );
 };
 
-export default DeleteDepartmentDialog;
+export default DeleteDesignationDialog;

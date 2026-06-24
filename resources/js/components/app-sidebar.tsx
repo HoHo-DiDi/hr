@@ -1,5 +1,11 @@
 import { Link } from '@inertiajs/react';
-import { House, LayoutGrid } from 'lucide-react';
+import {
+    CircleDollarSign,
+    Coins,
+    House,
+    LayoutGrid,
+    UserCog,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -16,6 +22,8 @@ import {
 import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 import departments from '@/routes/departments';
+import allowances from '@/routes/allowances';
+import designations from '@/routes/designations';
 
 const mainNavItems: NavItem[] = [
     {
@@ -27,6 +35,16 @@ const mainNavItems: NavItem[] = [
         title: 'Departments',
         href: departments.index(),
         icon: House,
+    },
+    {
+        title: 'Designations',
+        href: designations.index(),
+        icon: UserCog,
+    },
+    {
+        title: 'Allowances',
+        href: allowances.index(),
+        icon: CircleDollarSign,
     },
 ];
 
