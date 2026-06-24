@@ -48,6 +48,11 @@ export function LeaveTypeDialog({ isOpen, onClose, leaveType }: LeaveTypeDialogP
                 reset();
             }
             clearErrors();
+        } else {
+            // Always reset when dialog closes so stale edit data
+            // never hydrates a subsequent create form.
+            reset();
+            clearErrors();
         }
     }, [isOpen, leaveType]);
 
@@ -55,11 +60,17 @@ export function LeaveTypeDialog({ isOpen, onClose, leaveType }: LeaveTypeDialogP
         e.preventDefault();
         if (isEdit && leaveType) {
             put(leaveTypes.update(leaveType.id).url, {
-                onSuccess: () => onClose(),
+                onSuccess: () => {
+                    reset();
+                    onClose();
+                },
             });
         } else {
             post(leaveTypes.store().url, {
-                onSuccess: () => onClose(),
+                onSuccess: () => {
+                    reset();
+                    onClose();
+                },
             });
         }
     };
