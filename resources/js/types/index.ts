@@ -1,6 +1,28 @@
 export type * from './auth';
 export type * from './navigation';
 export type * from './ui';
+
+import {PageProps as InertiaPageProps } from "@inertiajs/core";
+
+interface FLashMessage{
+    success: string | null;
+    error: string | null;
+}
+
+export interface AuthUser{
+    id: number;
+    name:string;
+    email: string;
+}
+
+export interface SharedData extends InertiaPageProps{
+    name: string;
+    auth:{
+        user: AuthUser | null;
+    }
+    siderbarOpen:boolean;
+    flash: FLashMessage
+}
 export interface Link {
     url: string | null;
     label: string;
