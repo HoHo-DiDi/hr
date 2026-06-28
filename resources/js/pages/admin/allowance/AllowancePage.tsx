@@ -1,14 +1,14 @@
 import { Head } from '@inertiajs/react';
 import { Allowance } from '@/modules/allowance/type';
 import CreateAllowanceDialog from './CreateAllowanceDialog';
+import { Designation } from '@/modules/designation/type';
 
 interface PageProps {
     allowances: Allowance[];
+    designations: Designation[];
 }
 
-const AllowancePage = ({ allowances }: PageProps) => {
-    console.log(allowances);
-
+const AllowancePage = ({ allowances, designations }: PageProps) => {
     return (
         <>
             <Head title="Allowances" />
@@ -22,7 +22,7 @@ const AllowancePage = ({ allowances }: PageProps) => {
                             Manage your allowances.
                         </p>
                     </div>
-                    <CreateAllowanceDialog />
+                    <CreateAllowanceDialog designations={designations} />
                 </div>
             </div>
         </>

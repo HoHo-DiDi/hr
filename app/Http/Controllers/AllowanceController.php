@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Http\Requests\Allowance\StoreAllowanceRequest;
 use Illuminate\Http\Request;
 use App\Models\Allowance;
+use App\Models\Designation;
+use App\Services\AllowanceService;
 use Inertia\Inertia;
 
 class AllowanceController extends Controller
@@ -13,8 +17,11 @@ class AllowanceController extends Controller
      */
     public function index()
     {
-        $allowances = Allowance::all();
-        return Inertia::render('admin/allowance/AllowancePage', ['allowances' => $allowances]);
+        $designations = Designation::select('id', 'name')->get();
+
+        $allowances = Allowance::with('designations:id,name')->latest()->get();
+
+        return Inertia::render('admin/allowance/AllowancePage', ['allowances' => $allowances, 'designations' => $designations]);
     }
 
     /**
@@ -28,7 +35,19 @@ class AllowanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(StoreAllowanceRequest $request, AllowanceService $allowanceService)
+    {
+        $validated = $request->validated();
+        $allowanceService->createAllownace(
+            name: $validated['name'],
+            designationIds: $validated['designation_id'],
+            amount: $validated['amount']
+        );
+
+        return redirect()
+            ->route('allowances.index')
+            ->with('success', 'Allowance created successfully.');
+    }
 
     /**
      * Display the specified resource.

@@ -1,3 +1,4 @@
+import { MultiSelectField } from '@/components/form/MultiSelectField';
 import { TextField } from '@/components/form/TextField';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,13 +13,27 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import { Designation } from '@/modules/designation/type';
 import { store } from '@/routes/allowances';
 import { Form } from '@inertiajs/react';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 
-const CreateAllowanceDialog = () => {
+interface Props {
+    designations: Designation[];
+}
+
+const CreateAllowanceDialog = ({ designations }: Props) => {
     const [open, setOpen] = useState(false);
+    const [selectedDesignations, setSelectedDesignations] = useState<string[]>(
+        [],
+    );
+
+    const options = designations.map((designation) => ({
+        label: designation.name,
+        value: designation.id.toString(),
+    }));
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -31,7 +46,14 @@ const CreateAllowanceDialog = () => {
                 <Form
                     action={store()}
                     method="post"
-                    onSuccess={() => setOpen(false)}
+                    transform={(data) => ({
+                        ...data,
+                        designation_id: selectedDesignations,
+                    })}
+                    onSuccess={() => {
+                        setOpen(false);
+                        setSelectedDesignations([]);
+                    }}
                 >
                     {({ errors, processing }) => (
                         <>
@@ -45,14 +67,21 @@ const CreateAllowanceDialog = () => {
                                     label="Allowance Name"
                                     id="name"
                                     name="name"
-                                    placeholder="Enter name (eg. Bill Allowance, Ferry Allowance)"
+                                    placeholder="Enter name"
                                     className="max-w-md"
                                     error={errors.name}
                                 />
+
+                                <MultiSelectField
+                                    label="Designation"
+                                    placeholder="Select designations"
+                                    options={options}
+                                    selected={selectedDesignations}
+                                    onChange={setSelectedDesignations}
+                                    error={errors.designation_id}
+                                />
                                 <div>
-                                    <Label htmlFor="amount">
-                                        Amount (MMK)k
-                                    </Label>
+                                    <Label htmlFor="amount">Amount (MMK)</Label>
                                     <Input
                                         type="number"
                                         name="amount"
