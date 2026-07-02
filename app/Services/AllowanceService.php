@@ -29,7 +29,32 @@ class AllowanceService
                 'trace' => $th->getTraceAsString(),
             ]);
 
-            throw new Exception('Unable to create allownace at this time. Please try again');
+            throw new Exception('Unable to create allowance at this time. Please try again');
+        }
+    }
+
+    public function updateAllowance(Allowance $allowance, array $data): Allowance
+    {
+        try {
+            return DB::transaction(function () use ($allowance, $data) {
+                $allowance->update([
+                    'name' => $data['name'],
+                    'amount' => $data['amount']
+                ]);
+
+                $allowance->designations()->sync($data['designation_id']);
+
+                return $allowance;
+            });
+        } catch (\Throwable $th) {
+            Log::error('Failed to update allowance: ' . $th->getMessage(), [
+                'name' => $data['name'],
+
+                'designation_ids' => $data['designation_id'] ?? null,
+                'trace' => $th->getTraceAsString(),
+            ]);
+
+            throw new Exception('Unable to update allowance at this time. Please try again');
         }
     }
 }

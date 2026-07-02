@@ -1,14 +1,38 @@
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { Allowance } from '@/modules/allowance/type';
 import CreateAllowanceDialog from './CreateAllowanceDialog';
 import { Designation } from '@/modules/designation/type';
+import { DataTable } from '@/components/Datatable';
+import { allowanceColumns } from '@/modules/allowance/components/allowanceColumns';
+import allowances, { destroy } from '@/routes/allowances';
+import { useEffect, useState } from 'react';
+
+interface AllowancePaginator {
+    data: Allowance[];
+    current_page: number;
+    per_page: number;
+    [key: string]: any;
+}
 
 interface PageProps {
-    allowances: Allowance[];
+    allowances: AllowancePaginator;
     designations: Designation[];
 }
 
 const AllowancePage = ({ allowances, designations }: PageProps) => {
+    const [pagination, setPagination] = useState({
+        pageIndex: Math.max(allowances.current_page - 1, 0),
+        pageSize: allowances.per_page,
+    });
+
+    useEffect(() => {
+        setPagination({
+            pageIndex: Math.max(allowances.current_page - 1, 0),
+            pageSize: allowances.per_page,
+        });
+    }, [allowances.current_page, allowances.per_page]);
+
+    const pageCount = allowances.last_page;
     return (
         <>
             <Head title="Allowances" />
@@ -24,9 +48,34 @@ const AllowancePage = ({ allowances, designations }: PageProps) => {
                     </div>
                     <CreateAllowanceDialog designations={designations} />
                 </div>
+
+                <div>
+                    <DataTable
+                        columns={allowanceColumns}
+                        data={allowances.data}
+                        meta={{
+                            onDelete: (allowance: Allowance) => {
+                                router.delete(destroy(allowance.id).url);
+                            },
+                            designations,
+                        }}
+                        pageCount={pageCount}
+                        pagination={pagination}
+                        setPagination={setPagination}
+                    />
+                </div>
             </div>
         </>
     );
+};
+
+AllowancePage.layout = {
+    breadcrumbs: [
+        {
+            title: 'Allowances',
+            href: allowances.index.url(),
+        },
+    ],
 };
 
 export default AllowancePage;

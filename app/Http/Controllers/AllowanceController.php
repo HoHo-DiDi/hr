@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\Allowance\StoreAllowanceRequest;
+use App\Http\Requests\Allowance\UpdateAllowanceRequest;
 use Illuminate\Http\Request;
 use App\Models\Allowance;
 use App\Models\Designation;
@@ -19,7 +20,7 @@ class AllowanceController extends Controller
     {
         $designations = Designation::select('id', 'name')->get();
 
-        $allowances = Allowance::with('designations:id,name')->latest()->get();
+        $allowances = Allowance::with('designations:id,name')->latest()->paginate();
 
         return Inertia::render('admin/allowance/AllowancePage', ['allowances' => $allowances, 'designations' => $designations]);
     }
@@ -68,16 +69,22 @@ class AllowanceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateAllowanceRequest $request, Allowance $allowance,  AllowanceService $allowanceService)
     {
-        //
+        $validated = $request->validated();
+        $allowanceService->updateAllowance($allowance, $validated);
+
+        return redirect()->route('allowances.index')->with('success', 'Allowance update successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Allowance $allowance)
     {
-        //
+        $allowance->delete();
+
+        return redirect()->route('allowances.index')
+            ->with('success', 'Allowance deleted successfully.');
     }
 }
