@@ -8,7 +8,7 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     error?: string;
 }
 
-const TextField = forwardRef<HTMLInputElement, TextFieldProps>(({ label, error, id, className, ...props }, ref) => {
+export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(({ label, error, id, className, ...props }, ref) => {
     const inputId = id || useId();
     return (
         <div className={cn('w-full grid items-center gap-2', className)}>

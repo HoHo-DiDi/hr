@@ -3,6 +3,7 @@
 namespace App\Http\Requests\LeaveType;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateLeaveTypeRequest extends FormRequest
 {
@@ -23,7 +24,7 @@ class UpdateLeaveTypeRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'symbol' => ['required', 'string', "unique:leave_types,symbol,except,$this->route('leave_type')"],
+            'symbol' => ['required', 'string', Rule::unique('leave_types', 'symbol')->ignore($this->route('leave_type'))],
             'yearly_reset' => ['required', 'numeric', 'min:0'],
             'is_paid' => ['required', 'boolean'],
             'is_refundable' => ['required', 'boolean'],

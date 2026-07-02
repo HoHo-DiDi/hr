@@ -10,3 +10,8 @@ export type LeaveType = {
     updated_at: string;
     deleted_at: string | null;
 };
+
+export type TableMeta = {
+    onEdit: (leaveType: LeaveType) => void;
+    onDelete: (leaveType: LeaveType) => void;
+}
