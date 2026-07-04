@@ -16,8 +16,10 @@ class LeaveTypeService
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%$search%")
-                    ->orWhere('symbol', 'like', "%$search%")
-                    ->orWhere('yearly_reset', $search);
+                    ->orWhere('symbol', 'like', "%$search%");
+                if (ctype_digit($search)) {
+                    $q->orWhereRaw('CAST(yearly_reset as CHAR) LIKE ?', ["%{$search}%"]);
+                }
             });
         }
 
