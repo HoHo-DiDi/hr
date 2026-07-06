@@ -1,36 +1,24 @@
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { Department } from '@/modules/department/type';
-import React from 'react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Department } from "@/modules/department/type"
+import departments from "@/routes/departments";
+import { useForm } from "@inertiajs/react";
 
-const DeleteDepartmentDialog = ({
-    open,
-    onOpenChange,
-    department,
-    onDelete,
-}: {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    department: Department;
-    onDelete: ((department: Department) => void) | undefined;
-}) => {
+interface DialogProps {
+    department: Department | null;
+    onClose: () => void;
+}
+
+export const DeleteDepartmentDialog = ({ department, onClose }: DialogProps) => {
+    const isOpen = !!department;
+    const { delete: destroy, processing } = useForm();
     const handleDelete = () => {
-        if (onDelete) {
-            onDelete(department);
-            onOpenChange(false);
+        if (department) {
+            destroy(departments.destroy(department.id).url);
         }
-    };
+    }
 
     return (
-        <AlertDialog open={open} onOpenChange={onOpenChange}>
+        <AlertDialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>
@@ -38,15 +26,15 @@ const DeleteDepartmentDialog = ({
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                         This will permanently delete{' '}
-                        <strong>{department.name}</strong> and remove it from
+                        <strong>{department?.name}</strong> and remove it from
                         the system. This action cannot be undone.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel onClick={() => onOpenChange(false)}>
+                    <AlertDialogCancel disabled={processing} onClick={() => onClose()}>
                         Cancel
                     </AlertDialogCancel>
-                    <AlertDialogAction
+                    <AlertDialogAction disabled={processing}
                         onClick={handleDelete}
                         className="bg-red-600 text-white hover:bg-red-700 focus:ring-red-600"
                     >
@@ -55,7 +43,5 @@ const DeleteDepartmentDialog = ({
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
-    );
-};
-
-export default DeleteDepartmentDialog;
+    )
+}

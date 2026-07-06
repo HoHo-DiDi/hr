@@ -12,12 +12,14 @@ use Inertia\Inertia;
 
 class DepartmentController extends Controller
 {
+
+    public function __construct(protected DepartmentService $service) {}
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $departments = Department::select('id', 'name')->latest()->paginate();
+        $departments = $this->service->getData($request->only(['search', 'sort', 'direction', 'per_page']));
         return Inertia::render('admin/department/DepartmentPage', ['departments' => $departments]);
     }
 

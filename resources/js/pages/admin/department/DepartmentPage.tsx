@@ -1,36 +1,34 @@
 import { Head, router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import CreateDepartmentDialog from './CreateDepartmentDialog';
-import { DataTable } from '@/components/Datatable';
 import { departmentColumns } from '../../../modules/department/components/departmentColumns';
 import { Department } from '@/modules/department/type';
 import departments, { destroy } from '@/routes/departments';
+import { DataTable } from '@/components/data-table';
+import { LaravelPagination } from '@/types';
+import { useEntityDialog } from '@/hooks/use-entity-dialog';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
+import { DepartmentDialog } from './DepartmentDialog';
+import { DeleteDepartmentDialog } from './DeleteDepartmentDialog';
 
-interface DepartmentPaginator {
-    data: Department[];
-    current_page: number;
-    per_page: number;
-    [key: string]: any;
-}
+
 
 interface PageProps {
-    departments: DepartmentPaginator;
+    departments: LaravelPagination<Department>;
 }
 
 const DepartmentPage = ({ departments }: PageProps) => {
-    const [pagination, setPagination] = useState({
-        pageIndex: Math.max(departments.current_page - 1, 0),
-        pageSize: departments.per_page,
-    });
 
-    useEffect(() => {
-        setPagination({
-            pageIndex: Math.max(departments.current_page - 1, 0),
-            pageSize: departments.per_page,
-        });
-    }, [departments.current_page, departments.per_page]);
-
-    const pageCount = departments.last_page;
+    const {
+        create,
+        edit,
+        destroy,
+        close,
+        isOpen,
+        item,
+        mode
+    } = useEntityDialog<Department>();
 
     return (
         <>
@@ -45,24 +43,25 @@ const DepartmentPage = ({ departments }: PageProps) => {
                             Manage your departments.
                         </p>
                     </div>
-                    <CreateDepartmentDialog />
+                    <Button onClick={create}>
+                        <Plus className="mr-2 h-4 w-4" />
+                        Create Department
+                    </Button>
                 </div>
 
                 <div>
                     <DataTable
+                        paginationData={departments}
                         columns={departmentColumns}
-                        data={departments.data}
                         meta={{
-                            onDelete: (department: Department) => {
-                                router.delete(destroy(department.id).url);
-                            },
+                            onEdit: edit,
+                            onDelete: destroy
                         }}
-                        pageCount={pageCount}
-                        pagination={pagination}
-                        setPagination={setPagination}
                     />
                 </div>
             </div>
+            {isOpen && mode !== 'delete' && <DepartmentDialog open={isOpen} mode={mode as 'create' | 'edit'} department={item} onClose={close} />}
+            {isOpen && mode === 'delete' && <DeleteDepartmentDialog department={item} onClose={close} />}
         </>
     );
 };

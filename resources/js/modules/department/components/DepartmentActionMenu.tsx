@@ -7,9 +7,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { Department, DepartmentTableMeta } from '../type';
-import EditDepartmentDialog from '@/pages/admin/department/EditDepartmentDialog';
-import { useState } from 'react';
-import DeleteDepartmentDialog from '@/pages/admin/department/DeleteDepartmentDialog';
 
 export function DepartmentActionMenu({
     department,
@@ -18,8 +15,6 @@ export function DepartmentActionMenu({
     department: Department;
     meta: DepartmentTableMeta | undefined;
 }) {
-    const [open, setOpen] = useState(false);
-    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
     return (
         <>
@@ -31,13 +26,13 @@ export function DepartmentActionMenu({
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => setOpen(true)}>
+                    <DropdownMenuItem onClick={() => meta?.onEdit(department)}>
                         <Pencil className="mr-1 h-4 w-4" />
                         Edit
                     </DropdownMenuItem>
                     {meta?.onDelete && (
                         <DropdownMenuItem
-                            onClick={() => setIsDeleteDialogOpen(true)}
+                            onClick={() => meta.onDelete(department)}
                             className="text-red-600"
                         >
                             <Trash2 className="mr-1 h-4 w-4" />
@@ -46,20 +41,6 @@ export function DepartmentActionMenu({
                     )}
                 </DropdownMenuContent>
             </DropdownMenu>
-
-            <DeleteDepartmentDialog
-                department={department}
-                open={isDeleteDialogOpen}
-                onOpenChange={setIsDeleteDialogOpen}
-                onDelete={meta?.onDelete}
-            />
-
-            <EditDepartmentDialog
-                id={department.id}
-                name={department.name}
-                open={open}
-                onOpenChange={setOpen}
-            />
         </>
     );
 }

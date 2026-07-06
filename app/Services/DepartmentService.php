@@ -10,6 +10,23 @@ use Exception;
 
 class DepartmentService
 {
+    public function getData(array $filters)
+    {
+        $query = Department::query();
+
+        if (isset($filters['sort']) && $filters['sort'] == 'name') {
+            $sort = $filters['sort'];
+            $direction = $filters['direction'] === 'desc' ? 'desc' : 'asc';
+            $query->orderBy($sort, $direction);
+        } else {
+            $query->latest();
+        }
+        if (isset($filters['search'])) {
+            $query->where('name', 'like', "%{$filters['search']}%");
+        }
+        return $query->select('id', 'name')->paginate($filters['per_page'] ?? 10)->withQueryString();
+    }
+
     public function createDepartment(string $name)
     {
         try {
