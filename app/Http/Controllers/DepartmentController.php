@@ -23,48 +23,27 @@ class DepartmentController extends Controller
         return Inertia::render('admin/department/DepartmentPage', ['departments' => $departments]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDepartmentRequest $request, DepartmentService $departmentService)
+    public function store(StoreDepartmentRequest $request)
     {
         $validated = $request->validated();
-        $departmentService->createDepartment(name: $validated['name']);
+        $this->service->store(name: $validated['name']);
 
         return redirect()->route('departments.index')->with('success', 'Department created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Department $department)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Department $department)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDepartmentRequest $request, DepartmentService $departmentService, Department $department)
+    public function update(UpdateDepartmentRequest $request, Department $department)
     {
         $validated = $request->validated();
-        $departmentService->updateDepartment(department: $department, name: $validated['name']);
+        $this->service->update(department: $department, name: $validated['name']);
 
         return redirect()->route('departments.index')->with('success', 'Department updated successfully.');
     }
@@ -74,11 +53,7 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        // if ($department->employees()->exists()) {
-        //     return back()->with('error', 'Cannot delete department because it is assigned to employee.');
-        // }
-
-        $department->delete();
+        $this->service->destroy($department);
 
         return redirect()->route('departments.index')
             ->with('success', 'Department deleted successfully.');
