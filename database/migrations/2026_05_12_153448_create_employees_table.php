@@ -15,6 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('e_code')->unique();
+            $table->string('phone');
+            $table->string('employment_status');
+            $table->string('avatar')->nullable();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
             $table->foreignId('department_id')
                 ->constrained()
                 ->cascadeOnDelete();
@@ -22,6 +28,8 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
             $table->integer('salary');
+            $table->date('joined_date');
+            $table->date('resigned_date');
             $table->timestamps();
         });
     }

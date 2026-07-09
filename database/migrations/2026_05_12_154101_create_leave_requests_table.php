@@ -20,7 +20,7 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
             $table->json('dates');
-            $table->enum('status', ['pending', 'approved', 'rejected']);
+            $table->string('status');
             $table->timestamps();
         });
     }
