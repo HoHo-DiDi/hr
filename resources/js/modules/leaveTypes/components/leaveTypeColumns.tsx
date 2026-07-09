@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { LeaveType, TableMeta } from "../types";
 import TextCell from "@/components/common/text-cell";
 import ToggleBadgeCell from "@/components/common/toggle-badge";
-import { LeaveTypeActionMenu } from "./action-menu";
+import { LeaveTypeActionMenu } from "./LeaveTypeActionMenu";
 
 export const leaveTypeColumns: ColumnDef<LeaveType>[] = [
     {

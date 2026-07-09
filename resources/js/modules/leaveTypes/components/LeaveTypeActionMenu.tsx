@@ -7,7 +7,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { EllipsisIcon, PencilIcon, Trash2Icon } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 interface LeaveTypeActionMenuProps {
     leaveType: LeaveType;
@@ -19,18 +19,19 @@ export function LeaveTypeActionMenu({ leaveType, onEdit, onDelete }: LeaveTypeAc
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon-sm" aria-label="Open actions menu">
-                    <EllipsisIcon />
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                    <span className="sr-only">Open menu</span>
+                    <MoreHorizontal className="h-4 w-4" />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 <DropdownMenuItem onSelect={() => onEdit(leaveType)}>
-                    <PencilIcon />
+                    <Pencil className="mr-1 h-4 w-4" />
                     Edit
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-destructive focus:bg-destructive/10 focus:text-destructive" variant="destructive" onSelect={() => onDelete(leaveType)}>
-                    <Trash2Icon />
+                <DropdownMenuItem className="text-red-600" onSelect={() => onDelete(leaveType)}>
+                    <Trash2 className="mr-1 h-4 w-4" />
+
                     Delete
                 </DropdownMenuItem>
             </DropdownMenuContent>

@@ -12,28 +12,32 @@ class LeaveTypeService
     public function getData(array $filters): LengthAwarePaginator
     {
         $query = LeaveType::query();
-        if (!empty($filters['search'])) {
+        if (isset($filters['search'])) {
             $search = $filters['search'];
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%$search%")
-                    ->orWhere('symbol', 'like', "%$search%");
-                if (ctype_digit($search)) {
-                    $q->orWhereRaw('CAST(yearly_reset as CHAR) LIKE ?', ["%{$search}%"]);
-                }
-            });
+            if (ctype_digit($search)) {
+                $query->whereRaw('CAST(yearly_reset as CHAR) = ?', ["$search"]);
+            } else {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%$search%")
+                        ->orWhere('symbol', 'like', "%$search%");
+                });
+            }
         }
 
-        $allowedSorts = [
-            'name',
-            'symbol',
-            'is_paid',
-            'is_refundable',
-            'yearly_reset',
-        ];
-        $sortField = $filters['sorting'] ?? null;
-        $direction = ($filters['direction'] ?? 'asc') === 'asc' ? 'asc' : 'desc';
-        if ($sortField && in_array($sortField, $allowedSorts)) {
-            $query->orderBy($sortField, $direction);
+        if (isset($filters['sort'])) {
+            $allowedSorts = [
+                'name',
+                'symbol',
+                'is_paid',
+                'is_refundable',
+                'yearly_reset',
+            ];
+            $sortField = $filters['sort'];
+
+            $direction = (isset($filters['direction']) && $filters['direction'] === 'desc') ? 'desc' : 'asc';
+            if (in_array($sortField, $allowedSorts)) {
+                $query->orderBy($sortField, $direction);
+            }
         } else {
             $query->orderBy('created_at', 'desc');
         }

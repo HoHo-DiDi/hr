@@ -19,9 +19,9 @@ class LeaveTypeController extends Controller
      */
     public function index(Request $request)
     {
-        $leaveTypes = $this->service->getData($request->only(['search', 'sorting', 'direction', 'per_page']));
+        $leaveTypes = $this->service->getData($request->only(['search', 'sort', 'direction', 'per_page']));
 
-        return inertia('admin/leave-types/IndexPage', compact('leaveTypes'));
+        return inertia('admin/leave-types/LeaveTypeIndexPage', compact('leaveTypes'));
     }
 
     /**

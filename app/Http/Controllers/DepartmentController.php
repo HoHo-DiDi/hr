@@ -20,7 +20,7 @@ class DepartmentController extends Controller
     public function index(Request $request)
     {
         $departments = $this->service->getData($request->only(['search', 'sort', 'direction', 'per_page']));
-        return Inertia::render('admin/department/DepartmentPage', ['departments' => $departments]);
+        return Inertia::render('admin/department/DepartmentIndexPage', ['departments' => $departments]);
     }
 
 

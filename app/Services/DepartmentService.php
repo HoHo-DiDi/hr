@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Exceptions\DeleteBlockedException;
 use App\Models\Department;
-use App\Exceptions\ServiceException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Exception;
@@ -17,7 +16,7 @@ class DepartmentService
 
         if (isset($filters['sort']) && $filters['sort'] == 'name') {
             $sort = $filters['sort'];
-            $direction = $filters['direction'] === 'desc' ? 'desc' : 'asc';
+            $direction = (isset($filters['sort']) && $filters['sort'] === 'desc') ? 'desc' : 'asc';
             $query->orderBy($sort, $direction);
         } else {
             $query->latest();

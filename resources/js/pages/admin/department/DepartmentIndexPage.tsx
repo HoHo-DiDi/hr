@@ -1,6 +1,4 @@
 import { Head, router } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
-import CreateDepartmentDialog from './CreateDepartmentDialog';
 import { departmentColumns } from '../../../modules/department/components/departmentColumns';
 import { Department } from '@/modules/department/type';
 import departments, { destroy } from '@/routes/departments';
@@ -9,8 +7,9 @@ import { LaravelPagination } from '@/types';
 import { useEntityDialog } from '@/hooks/use-entity-dialog';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { DepartmentDialog } from './DepartmentDialog';
-import { DeleteDepartmentDialog } from './DeleteDepartmentDialog';
+import { DepartmentDialog } from '../../../modules/department/components/DepartmentDialog';
+import { DeleteDepartmentDialog } from '../../../modules/department/components/DepartmentDeleteDialog';
+import { SearchInput } from '@/components/common/search-input';
 
 
 
@@ -43,10 +42,15 @@ const DepartmentPage = ({ departments }: PageProps) => {
                             Manage your departments.
                         </p>
                     </div>
-                    <Button onClick={create}>
-                        <Plus className="mr-2 h-4 w-4" />
-                        Create Department
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <SearchInput />
+                        <Button
+                            onClick={create}
+                        >
+                            <Plus className="mr-2 h-4 w-r" />
+                            Add Department
+                        </Button>
+                    </div>
                 </div>
 
                 <div>
