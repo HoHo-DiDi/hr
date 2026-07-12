@@ -5,4 +5,5 @@ export type Department = {
 
 export type DepartmentTableMeta = {
     onDelete: (department: Department) => void;
+    onEdit: (department: Department) => void;
 };

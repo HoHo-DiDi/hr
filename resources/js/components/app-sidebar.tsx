@@ -1,7 +1,8 @@
 import { Link } from '@inertiajs/react';
 import {
+    BookOpen,
     CircleDollarSign,
-    Coins,
+    FolderGit2,
     House,
     LayoutGrid,
     UserCog,
@@ -24,6 +25,7 @@ import type { NavItem } from '@/types';
 import departments from '@/routes/departments';
 import allowances from '@/routes/allowances';
 import designations from '@/routes/designations';
+import leaveTypes from '@/routes/leave-types';
 
 const mainNavItems: NavItem[] = [
     {
@@ -46,9 +48,24 @@ const mainNavItems: NavItem[] = [
         href: allowances.index(),
         icon: CircleDollarSign,
     },
+    {
+        title: 'Leave Types',
+        href: leaveTypes.index().url,
+    },
 ];
 
-const footerNavItems: NavItem[] = [];
+const footerNavItems: NavItem[] = [
+    {
+        title: 'Repository',
+        href: 'https://github.com/laravel/react-starter-kit',
+        icon: FolderGit2,
+    },
+    {
+        title: 'Documentation',
+        href: 'https://laravel.com/docs/starter-kits#react',
+        icon: BookOpen,
+    },
+];
 
 export function AppSidebar() {
     return (
@@ -70,7 +87,6 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

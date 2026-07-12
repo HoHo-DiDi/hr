@@ -8,7 +8,7 @@ interface TextAreaFieldProps extends TextareaHTMLAttributes<HTMLTextAreaElement>
     description?: string;
     error?: string;
 }
-const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>(({ id, className, error, label, description, ...props }, ref) => {
+export const TextAreaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>(({ id, className, error, label, description, ...props }, ref) => {
     const inputId = id || useId();
     return (<div className={cn("w-full grid gap-2 items-center", className)}>
         {label && <Label htmlFor={inputId}>{label}</Label>}

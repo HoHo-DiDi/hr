@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('leave_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('symbol')->unique();
             $table->integer('yearly_reset');
             $table->boolean('is_paid')->default(false);
             $table->boolean('is_refundable')->default(false);
+            $table->text('description')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
