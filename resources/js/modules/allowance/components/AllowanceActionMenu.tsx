@@ -7,9 +7,6 @@ import {
 import { Allowance, AllowanceTableMeta } from '../type';
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
-import { useState } from 'react';
-import EditAllowanceDialog from '@/pages/admin/allowance/EditAllowanceDialog';
-import DeleteAllowanceDialog from '@/pages/admin/allowance/DeleteAllowanceDialog';
 
 export function AllowanceActionMenu({
     allowance,
@@ -18,9 +15,6 @@ export function AllowanceActionMenu({
     allowance: Allowance;
     meta: AllowanceTableMeta | undefined;
 }) {
-    const [open, setOpen] = useState(false);
-    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-
     return (
         <>
             <DropdownMenu>
@@ -31,13 +25,13 @@ export function AllowanceActionMenu({
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => setOpen(true)}>
+                    <DropdownMenuItem onClick={() => meta?.onEdit(allowance)}>
                         <Pencil className="mr-1 h-4 w-4" />
                         Edit
                     </DropdownMenuItem>
                     {meta?.onDelete && (
                         <DropdownMenuItem
-                            onClick={() => setIsDeleteDialogOpen(true)}
+                            onClick={() => meta?.onDelete(allowance)}
                             className="text-red-600"
                         >
                             <Trash2 className="mr-1 h-4 w-4" />
@@ -46,20 +40,6 @@ export function AllowanceActionMenu({
                     )}
                 </DropdownMenuContent>
             </DropdownMenu>
-
-            <EditAllowanceDialog
-                allowance={allowance}
-                designations={meta?.designations ?? []}
-                open={open}
-                onOpenChange={setOpen}
-            />
-
-            <DeleteAllowanceDialog
-                open={isDeleteDialogOpen}
-                onOpenChange={setIsDeleteDialogOpen}
-                onDelete={meta?.onDelete}
-                allowance={allowance}
-            />
         </>
     );
 }

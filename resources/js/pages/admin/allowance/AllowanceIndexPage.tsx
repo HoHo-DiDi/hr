@@ -1,23 +1,25 @@
-import { Designation } from '@/modules/designation/type';
 import { Head } from '@inertiajs/react';
-import { designationColumns } from '@/modules/designation/components/designationColumns';
+import { Allowance } from '@/modules/allowance/type';
+import { Designation } from '@/modules/designation/type';
+import { allowanceColumns } from '@/modules/allowance/components/allowanceColumns';
+import allowances, { destroy } from '@/routes/allowances';
 import { DataTable } from '@/components/data-table';
 import { LaravelPagination } from '@/types';
 import { useEntityDialog } from '@/hooks/use-entity-dialog';
 import { SearchInput } from '@/components/common/search-input';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import designations from '@/routes/designations';
-import DesignationDialog from '@/modules/designation/components/DesignationDialog';
-import DeleteDesignationDialog from '@/modules/designation/components/DeleteDesignationDialog';
+import AllowanceDialog from '@/modules/allowance/components/AllowanceDialog';
+import DeleteAllowanceDialog from '@/modules/allowance/components/DeleteAllowanceDialog';
 
 interface PageProps {
-    designations: LaravelPagination<Designation>;
+    allowances: LaravelPagination<Allowance>;
+    designations: Designation[];
 }
 
-const DesignationIndexPage = ({ designations }: PageProps) => {
+const AllowanceIndexPage = ({ allowances, designations }: PageProps) => {
     const { create, edit, destroy, close, isOpen, item, mode } =
-        useEntityDialog<Designation>();
+        useEntityDialog<Allowance>();
 
     return (
         <>
@@ -26,25 +28,25 @@ const DesignationIndexPage = ({ designations }: PageProps) => {
                 <div className="mb-2 flex items-center justify-between">
                     <div>
                         <h2 className="text-2xl font-bold text-foreground">
-                            Designations
+                            Allowances
                         </h2>
                         <p className="mt-1 text-sm text-muted-foreground">
-                            Manage your designations.
+                            Manage your allowances.
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <SearchInput />
                         <Button onClick={create}>
                             <Plus className="w-r mr-2 h-4" />
-                            Add Designation
+                            Add Allowance
                         </Button>
                     </div>
                 </div>
 
                 <div>
                     <DataTable
-                        paginationData={designations}
-                        columns={designationColumns}
+                        columns={allowanceColumns}
+                        paginationData={allowances}
                         meta={{
                             onEdit: edit,
                             onDelete: destroy,
@@ -54,27 +56,28 @@ const DesignationIndexPage = ({ designations }: PageProps) => {
             </div>
 
             {isOpen && mode !== 'delete' && (
-                <DesignationDialog
+                <AllowanceDialog
                     open={isOpen}
                     mode={mode as 'create' | 'edit'}
-                    designation={item}
+                    allowance={item}
+                    designations={designations}
                     onClose={close}
                 />
             )}
             {isOpen && mode === 'delete' && (
-                <DeleteDesignationDialog designation={item} onClose={close} />
+                <DeleteAllowanceDialog allowance={item} onClose={close} />
             )}
         </>
     );
 };
 
-DesignationIndexPage.layout = {
+AllowanceIndexPage.layout = {
     breadcrumbs: [
         {
-            title: 'Designations',
-            href: designations.index.url(),
+            title: 'Allowances',
+            href: allowances.index.url(),
         },
     ],
 };
 
-export default DesignationIndexPage;
+export default AllowanceIndexPage;

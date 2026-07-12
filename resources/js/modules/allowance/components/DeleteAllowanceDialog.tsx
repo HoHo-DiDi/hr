@@ -9,26 +9,29 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Allowance } from '@/modules/allowance/type';
+import allowances from '@/routes/allowances';
+import { useForm } from '@inertiajs/react';
 
-const DeleteAllowanceDialog = ({
-    open,
-    onOpenChange,
-    allowance,
-    onDelete,
-}: {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    allowance: Allowance;
-    onDelete: ((allowance: Allowance) => void) | undefined;
-}) => {
+interface DialogProps {
+    allowance: Allowance | null;
+    onClose: () => void;
+}
+const DeleteAllowanceDialog = ({ allowance, onClose }: DialogProps) => {
+    const isOpen = !!allowance;
+    const { delete: destroy, processing } = useForm();
+
     const handleDelete = () => {
-        if (onDelete) {
-            onDelete(allowance);
-            onOpenChange(false);
+        if (allowance) {
+            destroy(allowances.destroy(allowance.id).url, {
+                onSuccess: () => {
+                    onClose();
+                },
+            });
         }
     };
+
     return (
-        <AlertDialog open={open} onOpenChange={onOpenChange}>
+        <AlertDialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>
@@ -36,19 +39,19 @@ const DeleteAllowanceDialog = ({
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                         This will permanently delete{' '}
-                        <strong>{allowance.name}</strong> and remove it from the
-                        system. This action cannot be undone.
+                        <strong>{allowance?.name}</strong> and remove it from
+                        the system. This action cannot be undone.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel onClick={() => onOpenChange(false)}>
+                    <AlertDialogCancel onClick={(open) => !open && onClose()}>
                         Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
                         onClick={handleDelete}
                         className="bg-red-600 text-white hover:bg-red-700 focus:ring-red-600"
                     >
-                        Delete
+                        {processing ? 'Deleting...' : 'Delete'}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

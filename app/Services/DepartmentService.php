@@ -16,7 +16,7 @@ class DepartmentService
 
         if (isset($filters['sort']) && $filters['sort'] == 'name') {
             $sort = $filters['sort'];
-            $direction = (isset($filters['sort']) && $filters['sort'] === 'desc') ? 'desc' : 'asc';
+            $direction = (isset($filters['sort']) && $filters['direction'] === 'desc') ? 'desc' : 'asc';
             $query->orderBy($sort, $direction);
         } else {
             $query->latest();

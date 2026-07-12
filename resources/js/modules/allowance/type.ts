@@ -9,5 +9,6 @@ export interface Allowance {
 
 export type AllowanceTableMeta = {
     onDelete: (allowance: Allowance) => void;
+    onEdit: (allowance: Allowance) => void;
     designations: Designation[];
 };

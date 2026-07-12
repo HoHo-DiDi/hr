@@ -5,74 +5,45 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Allowance\StoreAllowanceRequest;
 use App\Http\Requests\Allowance\UpdateAllowanceRequest;
-use Illuminate\Http\Request;
 use App\Models\Allowance;
 use App\Models\Designation;
 use App\Services\AllowanceService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class AllowanceController extends Controller
 {
+    public function __construct(protected AllowanceService $service) {}
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $designations = Designation::select('id', 'name')->get();
 
-        $allowances = Allowance::with('designations:id,name')->latest()->paginate();
+        $allowances = $this->service->getAllowances($request->only(['search', 'sort', 'direction', 'per_page']));
 
-        return Inertia::render('admin/allowance/AllowancePage', ['allowances' => $allowances, 'designations' => $designations]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Inertia::render('admin/allowance/AllowanceIndexPage', ['allowances' => $allowances, 'designations' => $designations]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAllowanceRequest $request, AllowanceService $allowanceService)
+    public function store(StoreAllowanceRequest $request)
     {
-        $validated = $request->validated();
-        $allowanceService->createAllownace(
-            name: $validated['name'],
-            designationIds: $validated['designation_id'],
-            amount: $validated['amount']
-        );
-
+        $this->service->store($request->validated());
         return redirect()
             ->route('allowances.index')
             ->with('success', 'Allowance created successfully.');
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAllowanceRequest $request, Allowance $allowance,  AllowanceService $allowanceService)
+    public function update(UpdateAllowanceRequest $request, Allowance $allowance)
     {
-        $validated = $request->validated();
-        $allowanceService->updateAllowance($allowance, $validated);
+        $this->service->update($request->validated(), $allowance);
 
         return redirect()->route('allowances.index')->with('success', 'Allowance update successfully.');
     }
@@ -82,7 +53,7 @@ class AllowanceController extends Controller
      */
     public function destroy(Allowance $allowance)
     {
-        $allowance->delete();
+        $this->service->destroy($allowance);
 
         return redirect()->route('allowances.index')
             ->with('success', 'Allowance deleted successfully.');

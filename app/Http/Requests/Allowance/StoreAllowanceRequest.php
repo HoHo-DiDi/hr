@@ -26,7 +26,7 @@ class StoreAllowanceRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'designation_id' => ['required', 'array', 'min:1'],
             'designation_id.*' => ['required', 'integer', 'exists:designations,id'],
-            'amount' => ['required', 'decimal:0,2', 'min:0'],
+            'amount' => ['required', 'decimal:0,2', 'min:100'],
         ];
     }
 }

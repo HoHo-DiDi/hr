@@ -59,7 +59,7 @@ const DesignationDialog = ({
     };
     return (
         <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
-            <DialogContent className="sm:max-w-sm">
+            <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
                         {isEdit ? 'Edit Designation' : 'Add Designation'}
