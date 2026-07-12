@@ -2,10 +2,10 @@ import { Head, router } from '@inertiajs/react';
 import { Allowance } from '@/modules/allowance/type';
 import CreateAllowanceDialog from './CreateAllowanceDialog';
 import { Designation } from '@/modules/designation/type';
-import { DataTable } from '@/components/Datatable';
 import { allowanceColumns } from '@/modules/allowance/components/allowanceColumns';
 import allowances, { destroy } from '@/routes/allowances';
 import { useEffect, useState } from 'react';
+import { DataTable } from '@/components/data-table';
 
 interface AllowancePaginator {
     data: Allowance[];

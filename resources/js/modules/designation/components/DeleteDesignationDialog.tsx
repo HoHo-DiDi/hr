@@ -9,26 +9,28 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { useForm } from '@inertiajs/react';
+import designations from '@/routes/designations';
 
-const DeleteDesignationDialog = ({
-    designation,
-    open,
-    onOpenChange,
-    onDelete,
-}: {
-    designation: Designation;
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onDelete: ((designation: Designation) => void) | undefined;
-}) => {
+interface DialogProps {
+    designation: Designation | null;
+    onClose: () => void;
+}
+const DeleteDesignationDialog = ({ designation, onClose }: DialogProps) => {
+    const isOpen = !!designation;
+    const { delete: destroy, processing } = useForm();
+
     const handleDelete = () => {
-        if (onDelete) {
-            onDelete(designation);
-            onOpenChange(false);
+        if (designation) {
+            destroy(designations.destroy(designation.id).url, {
+                onSuccess: () => {
+                    onClose();
+                },
+            });
         }
     };
     return (
-        <AlertDialog open={open} onOpenChange={onOpenChange}>
+        <AlertDialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>
@@ -36,19 +38,19 @@ const DeleteDesignationDialog = ({
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                         This will permanently delete{' '}
-                        <strong>{designation.name}</strong> and remove it from
+                        <strong>{designation?.name}</strong> and remove it from
                         the system. This action cannot be undone.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel onClick={() => onOpenChange(false)}>
+                    <AlertDialogCancel onClick={(open) => !open && onClose()}>
                         Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
                         onClick={handleDelete}
                         className="bg-red-600 text-white hover:bg-red-700 focus:ring-red-600"
                     >
-                        Delete
+                        {processing ? 'Deleting...' : 'Delete'}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

@@ -5,4 +5,5 @@ export interface Designation {
 
 export interface DesignationTableMeta {
     onDelete: (designation: Designation) => void;
+    onEdit: (designation: Designation) => void;
 }

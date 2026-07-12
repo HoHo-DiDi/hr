@@ -8,8 +8,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
-import DeleteDesignationDialog from '@/pages/admin/designation/DeleteDesignationDialog';
-import EditDesignationDialog from '@/pages/admin/designation/EditDesignationDialog';
 
 export function DesignationActionMenu({
     designation,
@@ -18,9 +16,6 @@ export function DesignationActionMenu({
     designation: Designation;
     meta: DesignationTableMeta | undefined;
 }) {
-    const [open, setOpen] = useState(false);
-    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-
     return (
         <>
             <DropdownMenu>
@@ -31,13 +26,13 @@ export function DesignationActionMenu({
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => setOpen(true)}>
+                    <DropdownMenuItem onClick={() => meta?.onEdit(designation)}>
                         <Pencil className="mr-1 h-4 w-4" />
                         Edit
                     </DropdownMenuItem>
                     {meta?.onDelete && (
                         <DropdownMenuItem
-                            onClick={() => setIsDeleteDialogOpen(true)}
+                            onClick={() => meta?.onDelete(designation)}
                             className="text-red-600"
                         >
                             <Trash2 className="mr-1 h-4 w-4" />
@@ -46,20 +41,6 @@ export function DesignationActionMenu({
                     )}
                 </DropdownMenuContent>
             </DropdownMenu>
-
-            <DeleteDesignationDialog
-                designation={designation}
-                open={isDeleteDialogOpen}
-                onOpenChange={setIsDeleteDialogOpen}
-                onDelete={meta?.onDelete}
-            />
-
-            <EditDesignationDialog
-                id={designation.id}
-                name={designation.name}
-                open={open}
-                onOpenChange={setOpen}
-            />
         </>
     );
 }

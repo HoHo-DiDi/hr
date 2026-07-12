@@ -2,20 +2,21 @@ import { TextField } from '@/components/form/TextField';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
     DialogHeader,
-    DialogTitle,
 } from '@/components/ui/dialog';
-import { Department } from '@/modules/department/type';
-import departments from '@/routes/departments';
+import { DialogTitle } from '@radix-ui/react-dialog';
+import { Designation } from '../type';
 import { useForm } from '@inertiajs/react';
-import { ReactEventHandler, useEffect } from 'react';
+import { useEffect } from 'react';
+import designations from '@/routes/designations';
 
 interface DialogProps {
     mode: 'create' | 'edit';
-    department: Department | null;
+    designation: Designation | null;
     onClose: () => void;
     open: boolean;
 }
@@ -24,9 +25,9 @@ interface FormValues {
     name: string;
 }
 
-export const DepartmentDialog = ({
+const DesignationDialog = ({
     mode,
-    department,
+    designation,
     onClose,
     open,
 }: DialogProps) => {
@@ -35,64 +36,64 @@ export const DepartmentDialog = ({
         useForm<FormValues>({ name: '' });
 
     useEffect(() => {
-        if (isEdit && department) {
-            setData({ name: department.name });
+        if (isEdit && designation) {
+            setData({ name: designation.name });
         } else {
             reset();
         }
-    }, [mode, department, open]);
+    }, [mode, designation, open]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (isEdit && department) {
-            put(departments.update(department?.id).url, {
+        if (isEdit && designation) {
+            put(designations.update(designation?.id).url, {
                 preserveScroll: true,
                 onSuccess: onClose,
             });
         } else {
-            post(departments.store().url, {
+            post(designations.store().url, {
                 preserveScroll: true,
                 onSuccess: onClose,
             });
         }
     };
-
     return (
         <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
-            <DialogContent>
+            <DialogContent className="sm:max-w-sm">
                 <DialogHeader>
                     <DialogTitle>
-                        {isEdit ? 'Edit Department' : 'Add Department'}
+                        {isEdit ? 'Edit Designation' : 'Add Designation'}
                     </DialogTitle>
                     <DialogDescription>
                         {isEdit
-                            ? 'Update the details of the department.'
-                            : 'Create a new department to organize employees.'}
+                            ? 'Update the details of the designation.'
+                            : 'Create a new designation to organize employees.'}
                     </DialogDescription>
                 </DialogHeader>
-                <form className="space-y-4" onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="space-y-4">
                     <TextField
-                        label="Department Name"
+                        label="Designation Name"
+                        id="name"
                         name="name"
+                        className="max-w-md"
                         value={data.name}
                         onChange={(e) => setData('name', e.target.value)}
                         error={errors.name}
                     />
+
                     <DialogFooter>
-                        <Button
-                            variant="outline"
-                            onClick={onClose}
-                            disabled={processing}
-                        >
-                            Cancel
-                        </Button>
+                        <DialogClose asChild>
+                            <Button variant={'outline'} type="button">
+                                Cancel
+                            </Button>
+                        </DialogClose>
                         <Button type="submit" disabled={processing}>
                             {isEdit
                                 ? processing
-                                    ? 'Saving'
-                                    : 'Save Changes'
+                                    ? 'Editing...'
+                                    : 'Edit'
                                 : processing
-                                  ? 'Creating'
+                                  ? 'Creating...'
                                   : 'Create'}
                         </Button>
                     </DialogFooter>
@@ -101,3 +102,5 @@ export const DepartmentDialog = ({
         </Dialog>
     );
 };
+
+export default DesignationDialog;

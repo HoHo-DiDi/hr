@@ -1,25 +1,37 @@
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { Department } from "@/modules/department/type"
-import departments from "@/routes/departments";
-import { useForm } from "@inertiajs/react";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Department } from '@/modules/department/type';
+import departments from '@/routes/departments';
+import { useForm } from '@inertiajs/react';
 
 interface DialogProps {
     department: Department | null;
     onClose: () => void;
 }
 
-export const DeleteDepartmentDialog = ({ department, onClose }: DialogProps) => {
+export const DeleteDepartmentDialog = ({
+    department,
+    onClose,
+}: DialogProps) => {
     const isOpen = !!department;
     const { delete: destroy, processing } = useForm();
     const handleDelete = () => {
         if (department) {
-            destroy(departments.destroy(department.id).url,{
+            destroy(departments.destroy(department.id).url, {
                 onSuccess: () => {
                     onClose();
-                }
+                },
             });
         }
-    }
+    };
 
     return (
         <AlertDialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -35,17 +47,21 @@ export const DeleteDepartmentDialog = ({ department, onClose }: DialogProps) => 
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel disabled={processing} onClick={() => onClose()}>
+                    <AlertDialogCancel
+                        disabled={processing}
+                        onClick={() => onClose()}
+                    >
                         Cancel
                     </AlertDialogCancel>
-                    <AlertDialogAction disabled={processing}
+                    <AlertDialogAction
+                        disabled={processing}
                         onClick={handleDelete}
                         className="bg-red-600 text-white hover:bg-red-700 focus:ring-red-600"
                     >
-                        {processing ? "Deleting" : "Delete"}
+                        {processing ? 'Deleting' : 'Delete'}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
-    )
-}
+    );
+};

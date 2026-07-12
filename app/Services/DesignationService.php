@@ -9,7 +9,24 @@ use Illuminate\Support\Facades\Log;
 
 class DesignationService
 {
-    public function createDesignation(string $name)
+    public function getData(array $filters)
+    {
+        $query = Designation::query();
+
+        if (isset($filters['sort']) && $filters['sort'] == 'name') {
+            $sort = $filters['sort'];
+            $direction = (isset($filters['sort']) && $filters['sort'] === 'desc') ? 'desc' : 'asc';
+            $query->orderBy($sort, $direction);
+        } else {
+            $query->latest();
+        }
+        if (isset($filters['search'])) {
+            $query->where('name', 'like', "%{$filters['search']}%");
+        }
+        return $query->select('id', 'name')->paginate($filters['per_page'] ?? 10)->withQueryString();
+    }
+
+    public function store(string $name)
     {
         try {
             return DB::transaction(function () use ($name) {
@@ -25,7 +42,7 @@ class DesignationService
         }
     }
 
-    public function updateDesignation(Designation $designation, string $name)
+    public function update(Designation $designation, string $name)
     {
         try {
             return DB::transaction(function () use ($designation, $name) {
@@ -35,6 +52,18 @@ class DesignationService
         } catch (\Throwable $th) {
             Log::error("Failed to update department: " . $th->getMessage());
             throw new Exception("Could not update designation. Please try again.");
+        }
+    }
+
+    public function destroy(Designation $designation)
+    {
+        try {
+            return DB::transaction(function () use ($designation) {
+                return $designation->delete();
+            });
+        } catch (\Throwable $th) {
+            Log::error("Failed to delete designation: " . $th->getMessage());
+            throw new Exception("Could not delete designation. Please try again.");
         }
     }
 }

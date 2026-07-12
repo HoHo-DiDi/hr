@@ -6,61 +6,40 @@ use App\Http\Requests\Designation\StoreDesignationRequest;
 use App\Http\Requests\Designation\UpdateDesignationRequest;
 use App\Models\Designation;
 use App\Services\DesignationService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DesignationController extends Controller
 {
+    public function __construct(protected DesignationService $service) {}
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $designations = Designation::select('id', 'name')->latest()->paginate();
-        return Inertia::render('admin/designation/DesignationPage', ['designations' => $designations]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $designations = $this->service->getData($request->only(['search', 'sort', 'direction', 'per_page']));
+        return Inertia::render('admin/designation/DesignationIndexPage', ['designations' => $designations]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDesignationRequest $request, DesignationService $designationService)
+    public function store(StoreDesignationRequest $request)
     {
         $validated = $request->validated();
-        $designationService->createDesignation(name: $validated['name']);
+        $this->service->store(name: $validated['name']);
 
         return redirect()->route('designations.index')->with('success', 'Designation created successfully.');
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Designation $designation)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDesignationRequest $request, DesignationService $designationService, Designation $designation)
+    public function update(UpdateDesignationRequest $request, Designation $designation)
     {
         $validated = $request->validated();
-        $designationService->updateDesignation(designation: $designation, name: $validated['name']);
+        $this->service->update(designation: $designation, name: $validated['name']);
 
         return redirect()->route('designations.index')->with('success', 'Designation updated successfully.');
     }
@@ -70,7 +49,7 @@ class DesignationController extends Controller
      */
     public function destroy(Designation $designation)
     {
-        $designation->delete();
+        $this->service->destroy($designation);
 
         return redirect()->route('designations.index')
             ->with('success', 'Designation deleted successfully.');
