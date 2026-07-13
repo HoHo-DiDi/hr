@@ -1,50 +1,50 @@
-import { Head, router } from '@inertiajs/react';
-import { departmentColumns } from '../../../modules/department/components/departmentColumns';
-import { Department } from '@/modules/department/type';
-import departments, { destroy } from '@/routes/departments';
+import { Designation } from '@/modules/designation/type';
+import { Head } from '@inertiajs/react';
+import { designationColumns } from '@/modules/designation/components/designationColumns';
 import { DataTable } from '@/components/data-table';
 import { LaravelPagination } from '@/types';
 import { useEntityDialog } from '@/hooks/use-entity-dialog';
+import { SearchInput } from '@/components/common/search-input';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { DepartmentDialog } from '../../../modules/department/components/DepartmentDialog';
-import { DeleteDepartmentDialog } from '../../../modules/department/components/DepartmentDeleteDialog';
-import { SearchInput } from '@/components/common/search-input';
+import designations from '@/routes/designations';
+import DesignationDialog from '@/modules/designation/components/DesignationDialog';
+import DeleteDesignationDialog from '@/modules/designation/components/DeleteDesignationDialog';
 
 interface PageProps {
-    departments: LaravelPagination<Department>;
+    designations: LaravelPagination<Designation>;
 }
 
-const DepartmentIndexPage = ({ departments }: PageProps) => {
+const DesignationIndexPage = ({ designations }: PageProps) => {
     const { create, edit, destroy, close, isOpen, item, mode } =
-        useEntityDialog<Department>();
+        useEntityDialog<Designation>();
 
     return (
         <>
-            <Head title="Departments" />
+            <Head title="Allowances" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="mb-2 flex items-center justify-between">
                     <div>
                         <h2 className="text-2xl font-bold text-foreground">
-                            Departments
+                            Designations
                         </h2>
                         <p className="mt-1 text-sm text-muted-foreground">
-                            Manage your departments.
+                            Manage your designations.
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <SearchInput />
                         <Button onClick={create}>
                             <Plus className="w-r mr-2 h-4" />
-                            Add Department
+                            Add Designation
                         </Button>
                     </div>
                 </div>
 
                 <div>
                     <DataTable
-                        paginationData={departments}
-                        columns={departmentColumns}
+                        paginationData={designations}
+                        columns={designationColumns}
                         meta={{
                             onEdit: edit,
                             onDelete: destroy,
@@ -52,28 +52,29 @@ const DepartmentIndexPage = ({ departments }: PageProps) => {
                     />
                 </div>
             </div>
+
             {isOpen && mode !== 'delete' && (
-                <DepartmentDialog
+                <DesignationDialog
                     open={isOpen}
                     mode={mode as 'create' | 'edit'}
-                    department={item}
+                    designation={item}
                     onClose={close}
                 />
             )}
             {isOpen && mode === 'delete' && (
-                <DeleteDepartmentDialog department={item} onClose={close} />
+                <DeleteDesignationDialog designation={item} onClose={close} />
             )}
         </>
     );
 };
 
-DepartmentIndexPage.layout = {
+DesignationIndexPage.layout = {
     breadcrumbs: [
         {
-            title: 'Departments',
-            href: departments.index.url(),
+            title: 'Designations',
+            href: designations.index.url(),
         },
     ],
 };
 
-export default DepartmentIndexPage;
+export default DesignationIndexPage;

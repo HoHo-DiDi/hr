@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Department;
+namespace App\Http\Requests\Designation;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreDepartmentRequest extends FormRequest
+class UpdateDesignationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,8 @@ class StoreDepartmentRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                'max:255',
+                'max:225',
+                'unique:designations,name'
             ]
         ];
     }

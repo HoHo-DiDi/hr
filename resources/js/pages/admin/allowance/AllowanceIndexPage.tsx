@@ -1,50 +1,52 @@
-import { Head, router } from '@inertiajs/react';
-import { departmentColumns } from '../../../modules/department/components/departmentColumns';
-import { Department } from '@/modules/department/type';
-import departments, { destroy } from '@/routes/departments';
+import { Head } from '@inertiajs/react';
+import { Allowance } from '@/modules/allowance/type';
+import { Designation } from '@/modules/designation/type';
+import { allowanceColumns } from '@/modules/allowance/components/allowanceColumns';
+import allowances, { destroy } from '@/routes/allowances';
 import { DataTable } from '@/components/data-table';
 import { LaravelPagination } from '@/types';
 import { useEntityDialog } from '@/hooks/use-entity-dialog';
+import { SearchInput } from '@/components/common/search-input';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import { DepartmentDialog } from '../../../modules/department/components/DepartmentDialog';
-import { DeleteDepartmentDialog } from '../../../modules/department/components/DepartmentDeleteDialog';
-import { SearchInput } from '@/components/common/search-input';
+import AllowanceDialog from '@/modules/allowance/components/AllowanceDialog';
+import DeleteAllowanceDialog from '@/modules/allowance/components/DeleteAllowanceDialog';
 
 interface PageProps {
-    departments: LaravelPagination<Department>;
+    allowances: LaravelPagination<Allowance>;
+    designations: Designation[];
 }
 
-const DepartmentIndexPage = ({ departments }: PageProps) => {
+const AllowanceIndexPage = ({ allowances, designations }: PageProps) => {
     const { create, edit, destroy, close, isOpen, item, mode } =
-        useEntityDialog<Department>();
+        useEntityDialog<Allowance>();
 
     return (
         <>
-            <Head title="Departments" />
+            <Head title="Allowances" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="mb-2 flex items-center justify-between">
                     <div>
                         <h2 className="text-2xl font-bold text-foreground">
-                            Departments
+                            Allowances
                         </h2>
                         <p className="mt-1 text-sm text-muted-foreground">
-                            Manage your departments.
+                            Manage your allowances.
                         </p>
                     </div>
                     <div className="flex items-center gap-2">
                         <SearchInput />
                         <Button onClick={create}>
                             <Plus className="w-r mr-2 h-4" />
-                            Add Department
+                            Add Allowance
                         </Button>
                     </div>
                 </div>
 
                 <div>
                     <DataTable
-                        paginationData={departments}
-                        columns={departmentColumns}
+                        columns={allowanceColumns}
+                        paginationData={allowances}
                         meta={{
                             onEdit: edit,
                             onDelete: destroy,
@@ -52,28 +54,30 @@ const DepartmentIndexPage = ({ departments }: PageProps) => {
                     />
                 </div>
             </div>
+
             {isOpen && mode !== 'delete' && (
-                <DepartmentDialog
+                <AllowanceDialog
                     open={isOpen}
                     mode={mode as 'create' | 'edit'}
-                    department={item}
+                    allowance={item}
+                    designations={designations}
                     onClose={close}
                 />
             )}
             {isOpen && mode === 'delete' && (
-                <DeleteDepartmentDialog department={item} onClose={close} />
+                <DeleteAllowanceDialog allowance={item} onClose={close} />
             )}
         </>
     );
 };
 
-DepartmentIndexPage.layout = {
+AllowanceIndexPage.layout = {
     breadcrumbs: [
         {
-            title: 'Departments',
-            href: departments.index.url(),
+            title: 'Allowances',
+            href: allowances.index.url(),
         },
     ],
 };
 
-export default DepartmentIndexPage;
+export default AllowanceIndexPage;

@@ -1,5 +1,12 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, House, LayoutGrid } from 'lucide-react';
+import {
+    BookOpen,
+    CircleDollarSign,
+    FolderGit2,
+    House,
+    LayoutGrid,
+    UserCog,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -16,6 +23,8 @@ import {
 import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 import departments from '@/routes/departments';
+import allowances from '@/routes/allowances';
+import designations from '@/routes/designations';
 import leaveTypes from '@/routes/leave-types';
 
 const mainNavItems: NavItem[] = [
@@ -30,22 +39,18 @@ const mainNavItems: NavItem[] = [
         icon: House,
     },
     {
-        title: 'Leave Types',
-        href: leaveTypes.index().url,
-
-    }
-];
-
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
+        title: 'Designations',
+        href: designations.index(),
+        icon: UserCog,
     },
     {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
+        title: 'Allowances',
+        href: allowances.index(),
+        icon: CircleDollarSign,
+    },
+    {
+        title: 'Leave Types',
+        href: leaveTypes.index().url,
     },
 ];
 
