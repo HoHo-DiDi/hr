@@ -17,7 +17,7 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         $employees = $this->service->getData($request->all());
-        return inertia('', compact('employees'));
+        return inertia('admin/employee/EmployeeIndexPage', compact('employees'));
     }
 
     /**

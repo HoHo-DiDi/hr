@@ -26,6 +26,7 @@ import departments from '@/routes/departments';
 import allowances from '@/routes/allowances';
 import designations from '@/routes/designations';
 import leaveTypes from '@/routes/leave-types';
+import employees from '@/routes/employees';
 
 const mainNavItems: NavItem[] = [
     {
@@ -52,6 +53,10 @@ const mainNavItems: NavItem[] = [
         title: 'Leave Types',
         href: leaveTypes.index().url,
     },
+    {
+        title: 'Employees',
+        href: employees.index().url
+    }
 ];
 
 export function AppSidebar() {
