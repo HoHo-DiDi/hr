@@ -9,7 +9,7 @@ export type Employee = {
     avatar: string | null;
     department_id: number;
     designation_id: number;
-    employment_status: string;
+    employment_status: 'in_probation' | 'permanent' | 'resigned';
     salary: number;
     joined_date: string;
     resigned_date: string | null;

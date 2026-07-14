@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\EmploymentStatus;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -25,7 +26,7 @@ class Employee extends Model
     protected $casts = [
         'joined_date' => 'date',
         'resigned_date' => 'date',
-        'status' => EmploymentStatus::class
+        'employment_status' => EmploymentStatus::class,
     ];
 
     public function department(): BelongsTo

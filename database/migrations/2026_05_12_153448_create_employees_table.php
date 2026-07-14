@@ -29,7 +29,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->integer('salary');
             $table->date('joined_date');
-            $table->date('resigned_date');
+            $table->date('resigned_date')->nullable();
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\EmploymentStatus;
 use App\Models\Employee;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DummyEmployeeSeeder extends Seeder
@@ -14,71 +14,198 @@ class DummyEmployeeSeeder extends Seeder
      */
     public function run(): void
     {
-        $employees = [
+
+        $data = [
             [
-                'name' => 'Ahmad Faiz bin Rahman',
-                'e_code' => 'EMP-0001',
-                'user_id' => 1,
-                'avatar' => null,
-                'department_id' => 1,
-                'designation_id' => 1,
-                'employment_status' => EmploymentStatus::PERMANENT->value,
-                'salary' => 5500.00,
-                'joined_date' => '2021-03-15',
-                'resigned_date' => null,
+                'user' => [
+                    'name' => 'Aung Aung',
+                    'email' => 'aungaung@example.com',
+                    'password' => bcrypt('password'),
+                ],
+                'employee' => [
+                    'e_code' => 'EMP001',
+                    'avatar' => null,
+                    'phone' => '+959 951 234 567',
+                    'department_id' => rand(1, 5),
+                    'designation_id' => rand(1, 5),
+                    'employment_status' => EmploymentStatus::PERMANENT,
+                    'salary' => 800000,
+                    'joined_date' => '2022-01-10',
+                    'resigned_date' => null,
+                ],
             ],
             [
-                'name' => 'Nur Aisyah binti Ismail',
-                'e_code' => 'EMP-0002',
-                'user_id' => 2,
-                'avatar' => null,
-                'department_id' => 2,
-                'designation_id' => 3,
-                'employment_status' => EmploymentStatus::PERMANENT->value,
-                'salary' => 4800.00,
-                'joined_date' => '2022-01-10',
-                'resigned_date' => null,
+                'user' => [
+                    'name' => 'Kyaw Kyaw',
+                    'email' => 'kyawkyaw@example.com',
+                    'password' => bcrypt('password'),
+                ],
+                'employee' => [
+                    'e_code' => 'EMP002',
+                    'avatar' => null,
+                    'phone' => '+959 972 345 678',
+                    'department_id' => rand(1, 5),
+                    'designation_id' => rand(1, 5),
+                    'employment_status' => EmploymentStatus::PERMANENT,
+                    'salary' => 950000,
+                    'joined_date' => '2022-05-15',
+                    'resigned_date' => null,
+                ],
             ],
             [
-                'name' => 'Kevin Tan Wei Ming',
-                'e_code' => 'EMP-0003',
-                'user_id' => 3,
-                'avatar' => null,
-                'department_id' => 1,
-                'designation_id' => 2,
-                'employment_status' => EmploymentStatus::IN_PROBATION->value,
-                'salary' => 3200.00,
-                'joined_date' => '2025-05-01',
-                'resigned_date' => null,
+                'user' => [
+                    'name' => 'Min Thu',
+                    'email' => 'minthu@example.com',
+                    'password' => bcrypt('password'),
+                ],
+                'employee' => [
+                    'e_code' => 'EMP003',
+                    'avatar' => null,
+                    'phone' => '+959 963 456 789',
+                    'department_id' => rand(1, 5),
+                    'designation_id' => rand(1, 5),
+                    'employment_status' => EmploymentStatus::IN_PROBATION,
+                    'salary' => 700000,
+                    'joined_date' => '2025-02-01',
+                    'resigned_date' => null,
+                ],
             ],
             [
-                'name' => 'Siti Nurhaliza binti Kassim',
-                'e_code' => 'EMP-0004',
-                'user_id' => 4,
-                'avatar' => null,
-                'department_id' => 3,
-                'designation_id' => 4,
-                'employment_status' => EmploymentStatus::RESIGNED->value,
-                'salary' => 4200.00,
-                'joined_date' => '2020-06-20',
-                'resigned_date' => '2024-11-30',
+                'user' => [
+                    'name' => 'Ye Lin',
+                    'email' => 'yelin@example.com',
+                    'password' => bcrypt('password'),
+                ],
+                'employee' => [
+                    'e_code' => 'EMP004',
+                    'avatar' => null,
+                    'phone' => '+959 940 567 891',
+                    'department_id' => rand(1, 5),
+                    'designation_id' => rand(1, 5),
+                    'employment_status' => EmploymentStatus::PERMANENT,
+                    'salary' => 1200000,
+                    'joined_date' => '2021-08-20',
+                    'resigned_date' => null,
+                ],
             ],
             [
-                'name' => 'Ravi Kumar a/l Suresh',
-                'e_code' => 'EMP-0005',
-                'user_id' => 5,
-                'avatar' => null,
-                'department_id' => 2,
-                'designation_id' => 1,
-                'employment_status' => EmploymentStatus::PERMANENT->value,
-                'salary' => 6100.00,
-                'joined_date' => '2019-09-05',
-                'resigned_date' => null,
+                'user' => [
+                    'name' => 'Ko Ko',
+                    'email' => 'koko@example.com',
+                    'password' => bcrypt('password'),
+                ],
+                'employee' => [
+                    'e_code' => 'EMP005',
+                    'avatar' => null,
+                    'phone' => '+959 958 678 912',
+                    'department_id' => rand(1, 5),
+                    'designation_id' => rand(1, 5),
+                    'employment_status' => EmploymentStatus::PERMANENT,
+                    'salary' => 900000,
+                    'joined_date' => '2023-03-12',
+                    'resigned_date' => null,
+                ],
+            ],
+            [
+                'user' => [
+                    'name' => 'Zaw Min',
+                    'email' => 'zawmin@example.com',
+                    'password' => bcrypt('password'),
+                ],
+                'employee' => [
+                    'e_code' => 'EMP006',
+                    'avatar' => null,
+                    'phone' => '+959 979 789 123',
+                    'department_id' => rand(1, 5),
+                    'designation_id' => rand(1, 5),
+                    'employment_status' => EmploymentStatus::PERMANENT,
+                    'salary' => 1300000,
+                    'joined_date' => '2020-11-05',
+                    'resigned_date' => null,
+                ],
+            ],
+            [
+                'user' => [
+                    'name' => 'Htet Aung',
+                    'email' => 'htetaung@example.com',
+                    'password' => bcrypt('password'),
+                ],
+                'employee' => [
+                    'e_code' => 'EMP007',
+                    'avatar' => null,
+                    'phone' => '+959 966 891 234',
+                    'department_id' => rand(1, 5),
+                    'designation_id' => rand(1, 5),
+                    'employment_status' => EmploymentStatus::IN_PROBATION,
+                    'salary' => 750000,
+                    'joined_date' => '2025-04-01',
+                    'resigned_date' => null,
+                ],
+            ],
+            [
+                'user' => [
+                    'name' => 'Soe Moe',
+                    'email' => 'soemoe@example.com',
+                    'password' => bcrypt('password'),
+                ],
+                'employee' => [
+                    'e_code' => 'EMP008',
+                    'avatar' => null,
+                    'phone' => '+959 943 912 345',
+                    'department_id' => rand(1, 5),
+                    'designation_id' => rand(1, 5),
+                    'employment_status' => EmploymentStatus::PERMANENT,
+                    'salary' => 1000000,
+                    'joined_date' => '2021-01-18',
+                    'resigned_date' => null,
+                ],
+            ],
+            [
+                'user' => [
+                    'name' => 'Nay Lin',
+                    'email' => 'naylin@example.com',
+                    'password' => bcrypt('password'),
+                ],
+                'employee' => [
+                    'e_code' => 'EMP009',
+                    'avatar' => null,
+                    'phone' => '+959 950 123 456',
+                    'department_id' => rand(1, 5),
+                    'designation_id' => rand(1, 5),
+                    'employment_status' => EmploymentStatus::RESIGNED,
+                    'salary' => 1100000,
+                    'joined_date' => '2019-09-10',
+                    'resigned_date' => '2025-06-30',
+                ],
+            ],
+            [
+                'user' => [
+                    'name' => 'Thiha Win',
+                    'email' => 'thihawin@example.com',
+                    'password' => bcrypt('password'),
+                ],
+                'employee' => [
+                    'e_code' => 'EMP010',
+                    'avatar' => null,
+                    'phone' => '+959 971 234 567',
+                    'department_id' => rand(1, 5),
+                    'designation_id' => rand(1, 5),
+                    'employment_status' => EmploymentStatus::PERMANENT,
+                    'salary' => 1400000,
+                    'joined_date' => '2018-07-01',
+                    'resigned_date' => null,
+                ],
             ],
         ];
-
-        foreach ($employees as $employee) {
-            Employee::create($employee);
+        $employees = [];
+        foreach ($data as $item) {
+            $user = User::create($item['user']);
+            $employees[] = [
+                'user_id' => $user->id,
+                'name' => $user->name,
+                ...$item['employee']
+            ];
         }
+        Employee::insert($employees);
     }
 }
